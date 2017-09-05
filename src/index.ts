@@ -1,1 +1,1 @@
-console.log("you win")
+console.log(process.argv)
