@@ -23,8 +23,14 @@
   },
   "homepage": "https://github.com/jaystack/corp-check-worker#readme",
   "devDependencies": {
+    "@types/execa": "^0.7.0",
+    "@types/fs-extra": "^4.0.1",
     "@types/node": "^8.0.26",
     "rimraf": "^2.6.1",
     "typescript": "^2.5.2"
+  },
+  "dependencies": {
+    "execa": "^0.8.0",
+    "fs-extra": "^4.0.1"
   }
 }
