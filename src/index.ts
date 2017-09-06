@@ -14,11 +14,13 @@ process.on('unhandledRejection', error => {
 
 const run = async (cid: string, pkgOrJson: string) => {
   if (!cid) throw new Error('Missing correlation id');
-  const { name, json } = resolvePackage(pkgOrJson);
+  const { scope, name, version, json } = resolvePackage(pkgOrJson);
+  console.log(scope, name, version);
   if (!name && !json) throw new Error('Missing or invalid package name or package.json');
   await exec(`rm -rf ${join(CWD, JOB_FOLDER)}`);
-  if (name) await npmInstallByName(name, JOB_FOLDER);
+  if (name) await npmInstallByName(`${scope}${name}${version}`, JOB_FOLDER);
   else if (json) await npmInstallByJson(json, JOB_FOLDER);
+  const entryPoint = name ? join(JOB_FOLDER, 'node_modules', name) : JOB_FOLDER;
 };
 
 run(cid, pkg);
