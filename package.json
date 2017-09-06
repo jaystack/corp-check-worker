@@ -32,6 +32,7 @@
   "dependencies": {
     "aws-sdk": "^2.109.0",
     "execa": "^0.8.0",
-    "fs-extra": "^4.0.1"
+    "fs-extra": "^4.0.1",
+    "get-license-npm": "^1.1.1"
   }
 }

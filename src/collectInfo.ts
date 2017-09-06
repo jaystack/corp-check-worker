@@ -1,11 +1,18 @@
 import { join } from 'path';
 import { readJson, readdir, pathExists } from 'fs-extra';
+import getLicenseInfo = require('get-license-npm');
 import { packageName as packageNamePattern, scope as scopePattern } from './patterns';
+
+export type License = {
+  license: string;
+  licenseFile: boolean;
+  private: boolean;
+};
 
 export type Info = {
   name: string;
   version: string;
-  licenses: string[];
+  license: License;
   dependencies: Info[];
 };
 
@@ -27,11 +34,12 @@ const getDependencies = async (entryPoint: string): Promise<Info[]> => {
 };
 
 const getInfo = async (entryPoint: string): Promise<Info> => {
-  const { name, version, license, licenses = [] } = await readJson(join(entryPoint, 'package.json'));
+  const { name, version } = await readJson(join(entryPoint, 'package.json'));
+  const license = await getLicenseInfo(entryPoint);
   return {
     name,
     version,
-    licenses: [ ...licenses, license ],
+    license: { license: license.license || null, licenseFile: !!license.licenseFile, private: !!license.private },
     dependencies: await getDependencies(join(entryPoint, 'node_modules'))
   };
 };
