@@ -1,4 +1,4 @@
-const packageNamePattern = /^(@[a-zA-Z0-9-]+\/)?([a-zA-Z0-9-]+)(@\d.\d.\d)?$/;
+import { fullPackageName } from './patterns';
 
 export default (
   pkgOrJson: string
@@ -11,10 +11,10 @@ export default (
   try {
     return { json: JSON.parse(pkgOrJson) };
   } catch (err) {
-    if (!packageNamePattern.test(pkgOrJson)) {
+    if (!fullPackageName.test(pkgOrJson)) {
       return { scope: null };
     } else {
-      const [ , scope = '', name = '', version = '' ] = packageNamePattern.exec(pkgOrJson);
+      const [ , scope = '', name = '', version = '' ] = fullPackageName.exec(pkgOrJson);
       return { scope, name, version };
     }
   }

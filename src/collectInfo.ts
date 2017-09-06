@@ -1,5 +1,6 @@
 import { join } from 'path';
 import { readJson, readdir, pathExists } from 'fs-extra';
+import { packageName as packageNamePattern, scope as scopePattern } from './patterns';
 
 export type Info = {
   name: string;
@@ -8,13 +9,26 @@ export type Info = {
   dependencies: Info[];
 };
 
+const getSubFolders = (predicate: (file: string) => boolean) => (files: string[]): string[] => files.filter(predicate);
+const getRegularFolders = getSubFolders(file => packageNamePattern.test(file));
+const getScopedFolders = getSubFolders(file => scopePattern.test(file));
+
+const flatArray = <T>(array: T[][]) => array.reduce((acc, arr) => [ ...acc, ...arr ], []);
+
 const getDependencies = async (entryPoint: string): Promise<Info[]> => {
-  const modulesPath = join(entryPoint, 'node_modules');
-  if (!await pathExists(modulesPath)) return [];
-  const modules = await readdir(modulesPath);
+  if (!await pathExists(entryPoint)) return [];
+  const files = await readdir(entryPoint);
+  const regularFolders = getRegularFolders(files);
+  const scopedFolders = getScopedFolders(files);
+  const regularDependencies = await Promise.all(regularFolders.map(folder => getInfo(join(entryPoint, folder))));
+  const scopes = await Promise.all(scopedFolders.map(folder => getDependencies(join(entryPoint, folder))));
+  const scopedDependencies = flatArray(scopes);
+  return [ ...regularDependencies, ...scopedDependencies ];
 };
 
-export default async (entryPoint: string): Promise<Info> => {
+const getInfo = async (entryPoint: string): Promise<Info> => {
   const { name, version, license } = await readJson(join(entryPoint, 'package.json'));
-  return { name, version, license, dependencies: await getDependencies(entryPoint) };
+  return { name, version, license, dependencies: await getDependencies(join(entryPoint, 'node_modules')) };
 };
+
+export default getInfo;

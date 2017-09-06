@@ -1,6 +1,6 @@
 import exec from './exec';
 import { join } from 'path';
-import { readFileSync } from 'fs-extra';
+import { readFileSync, writeJson } from 'fs-extra';
 import { installByName as npmInstallByName, installByJson as npmInstallByJson } from './npm';
 import resolvePackage from './resolvePackage';
 import collectInfo from './collectInfo';
@@ -22,7 +22,7 @@ const run = async (cid: string, pkgOrJson: string) => {
   else if (json) await npmInstallByJson(json, JOB_FOLDER);
   const entryPoint = name ? join(CWD, JOB_FOLDER, 'node_modules', name) : join(CWD, JOB_FOLDER);
   const info = await collectInfo(entryPoint);
-  console.log(info);
+  await writeJson('result.json', info, { spaces: 2 });
 };
 
 run(cid, pkg);
