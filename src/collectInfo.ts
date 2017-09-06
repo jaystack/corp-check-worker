@@ -27,13 +27,13 @@ const getDependencies = async (entryPoint: string): Promise<Info[]> => {
   const files = await readdir(entryPoint);
   const regularFolders = getRegularFolders(files);
   const scopedFolders = getScopedFolders(files);
-  const regularDependencies = await Promise.all(regularFolders.map(folder => getInfo(join(entryPoint, folder))));
+  const regularDependencies = await Promise.all(regularFolders.map(folder => collectInfo(join(entryPoint, folder))));
   const scopes = await Promise.all(scopedFolders.map(folder => getDependencies(join(entryPoint, folder))));
   const scopedDependencies = flatArray(scopes);
   return [ ...regularDependencies, ...scopedDependencies ];
 };
 
-const getInfo = async (entryPoint: string): Promise<Info> => {
+const collectInfo = async (entryPoint: string): Promise<Info> => {
   const { name, version } = await readJson(join(entryPoint, 'package.json'));
   const license = await getLicenseInfo(entryPoint);
   return {
@@ -44,4 +44,4 @@ const getInfo = async (entryPoint: string): Promise<Info> => {
   };
 };
 
-export default getInfo;
+export default collectInfo;

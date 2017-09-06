@@ -1,4 +1,4 @@
-import { readFileSync, writeJson } from 'fs-extra';
+import { writeJson } from 'fs-extra';
 import resolvePackage from './resolvePackage';
 import prepareWorkspace from './prepareWorkspace';
 import collectInfo from './collectInfo';
