@@ -20,8 +20,9 @@ const run = async (cid: string, pkgOrJson: string) => {
   await exec(`rm -rf ${join(CWD, JOB_FOLDER)}`);
   if (name) await npmInstallByName(`${scope}${name}${version}`, JOB_FOLDER);
   else if (json) await npmInstallByJson(json, JOB_FOLDER);
-  const entryPoint = name ? join(JOB_FOLDER, 'node_modules', name) : JOB_FOLDER;
-  return await collectInfo(entryPoint);
+  const entryPoint = name ? join(CWD, JOB_FOLDER, 'node_modules', name) : join(CWD, JOB_FOLDER);
+  const info = await collectInfo(entryPoint);
+  console.log(info);
 };
 
 run(cid, pkg);
