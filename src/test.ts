@@ -14,17 +14,24 @@ const defaultOptions = {
   name: 'ckecker'
 };
 
-export default (cid: string, pkg: string, { region, cluster, taskDefinition, name }: TaskOptions = defaultOptions) => {
+const runTask = (
+  cid: string,
+  pkg: string,
+  isProduction: boolean,
+  { region, cluster, taskDefinition, name }: TaskOptions = defaultOptions
+) => {
   return new Promise((resolve, reject) => {
     new AWS.ECS({ region }).runTask(
       {
         cluster,
         taskDefinition,
         overrides: {
-          containerOverrides: [ { name, command: [ 'node', '.', cid, pkg ] } ]
+          containerOverrides: [ { name, command: [ 'node', '.', cid, pkg, isProduction ? 'production' : '' ] } ]
         }
       },
       (err, data) => (err ? reject(err) : resolve(data))
     );
   });
 };
+
+runTask('123', 'repatch', false);
