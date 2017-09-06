@@ -11,7 +11,7 @@ const defaultOptions = {
   region: 'eu-central-1',
   cluster: 'checkers',
   taskDefinition: 'check',
-  name: 'ckecker'
+  name: 'checker'
 };
 
 const runTask = (
