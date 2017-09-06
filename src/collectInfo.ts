@@ -5,7 +5,7 @@ import { packageName as packageNamePattern, scope as scopePattern } from './patt
 export type Info = {
   name: string;
   version: string;
-  license: string;
+  licenses: string[];
   dependencies: Info[];
 };
 
@@ -27,8 +27,13 @@ const getDependencies = async (entryPoint: string): Promise<Info[]> => {
 };
 
 const getInfo = async (entryPoint: string): Promise<Info> => {
-  const { name, version, license } = await readJson(join(entryPoint, 'package.json'));
-  return { name, version, license, dependencies: await getDependencies(join(entryPoint, 'node_modules')) };
+  const { name, version, license, licenses = [] } = await readJson(join(entryPoint, 'package.json'));
+  return {
+    name,
+    version,
+    licenses: [ ...licenses, license ],
+    dependencies: await getDependencies(join(entryPoint, 'node_modules'))
+  };
 };
 
 export default getInfo;
