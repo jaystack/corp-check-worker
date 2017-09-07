@@ -9,18 +9,16 @@ export default async (
     json,
     scope,
     name,
-    version,
-    isProduction
+    version
   }: {
     json: any;
     scope: string;
     name: string;
     version: string;
-    isProduction: boolean;
   }
 ): Promise<string> => {
   await exec(`rm -rf ${join(cwd, folder)}`);
-  if (name) await npmInstallByName(`${scope}${name}${version}`, folder, isProduction);
-  else if (json) await npmInstallByJson(json, folder, isProduction);
+  if (name) await npmInstallByName(`${scope}${name}${version}`, folder);
+  else if (json) await npmInstallByJson(json, folder);
   return name ? join(cwd, folder, 'node_modules', name) : join(cwd, folder);
 };

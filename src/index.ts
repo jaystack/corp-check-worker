@@ -9,20 +9,20 @@ const COMPLETE_LAMBDA_NAME = process.env.COMPLETE_LAMBDA_NAME || 'Complete-dev';
 const CWD = process.cwd();
 const JOB_FOLDER = 'job';
 const RESULT_FILE = 'result.json';
-const [ , , cid, pkg, isProduction ] = process.argv;
+const [ , , cid, pkg ] = process.argv;
 
 process.on('unhandledRejection', error => {
   throw error;
 });
 
-const run = async (cid: string, pkgOrJson: string, isProduction: boolean = false) => {
+const run = async (cid: string, pkgOrJson: string) => {
   if (!cid) throw new Error('Missing correlation id');
   const { scope, name, version, json } = resolvePackage(pkgOrJson);
   if (!name && !json) throw new Error('Missing or invalid package name or package.json');
-  const entryPoint = await prepareWorkspace(CWD, JOB_FOLDER, { json, scope, name, version, isProduction });
+  const entryPoint = await prepareWorkspace(CWD, JOB_FOLDER, { json, scope, name, version });
   const info = await collectInfo(entryPoint);
   await writeJson(RESULT_FILE, info, { spaces: 2 });
   await invokeCompleteLambda(cid, info, { region: REGION, function: COMPLETE_LAMBDA_NAME });
 };
 
-run(cid, pkg, !!isProduction);
+run(cid, pkg);

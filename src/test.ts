@@ -26,7 +26,15 @@ const runTask = (
         cluster,
         taskDefinition,
         overrides: {
-          containerOverrides: [ { name, command: [ 'node', '.', cid, pkg, isProduction ? 'production' : '' ] } ]
+          containerOverrides: [
+            {
+              name,
+              command: [ 'node', '.', cid, pkg ],
+              environment: [
+                  { name: 'NODE_ENV', value: isProduction ? 'production': 'dev' }
+              ]
+            }
+          ]
         }
       },
       (err, data) => (err ? reject(err) : resolve(data))
@@ -34,4 +42,4 @@ const runTask = (
   });
 };
 
-runTask('123', 'repatch', false);
+runTask('123', 'repatch', false).then(d => console.log(d));
