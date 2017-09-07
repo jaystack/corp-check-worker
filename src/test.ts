@@ -30,9 +30,7 @@ const runTask = (
             {
               name,
               command: [ 'node', '.', cid, pkg ],
-              environment: [
-                  { name: 'NODE_ENV', value: isProduction ? 'production': 'dev' }
-              ]
+              environment: [ { name: 'NODE_ENV', value: isProduction ? 'production' : 'dev' } ]
             }
           ]
         }
@@ -42,4 +40,4 @@ const runTask = (
   });
 };
 
-runTask('123', 'repatch', false).then(d => console.log(d));
+runTask('H1FmOFCY-', 'redux', false).then(d => console.log(d));
