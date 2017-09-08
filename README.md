@@ -1,6 +1,8 @@
 # corp-check-worker
 Worker layer for corp-check
 
-## Build image and push to private docker repository
+## How to deploy
 
-Just run `push.sh`
+```
+npm run deploy
+```
