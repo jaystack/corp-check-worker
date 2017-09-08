@@ -58,7 +58,18 @@ const getPackageList = (pkg: Package, set: Set<string> = new Set<string>()): str
 
 const getStats = async (pkg: Package) => {
   const packageList = getPackageList(pkg);
-  return await request({ method: 'POST', uri: 'https://api.npms.io/v2/package/mget', json: true, body: packageList });
+  const stats = await request({
+    method: 'POST',
+    uri: 'https://api.npms.io/v2/package/mget',
+    json: true,
+    body: packageList
+  });
+  Object.values(stats).forEach(({ collected }) => {
+    delete collected.metadata.maintainers;
+    delete collected.metadata.readme;
+    delete collected.github.contributors;
+  });
+  return stats;
 };
 
 export default async (entryPoint: string): Promise<Info> => {
