@@ -17,10 +17,12 @@ export type Package = {
   dependencies: Package[];
 };
 
-export type Info = {
-  tree: Package;
-  stats: any;
-};
+export type Info =
+  | {
+      tree: Package;
+      stats: any;
+    }
+  | { error: string };
 
 const getSubFolders = (predicate: (file: string) => boolean) => (files: string[]): string[] => files.filter(predicate);
 const getRegularFolders = getSubFolders(file => packageNamePattern.test(file));
@@ -57,23 +59,39 @@ const getPackageList = (pkg: Package, set: Set<string> = new Set<string>()): str
 };
 
 const getStats = async (pkg: Package) => {
-  const packageList = getPackageList(pkg);
-  const stats = await request({
-    method: 'POST',
-    uri: 'https://api.npms.io/v2/package/mget',
-    json: true,
-    body: packageList
-  });
-  Object.values(stats).forEach(({ collected }) => {
-    delete collected.metadata.maintainers;
-    delete collected.metadata.readme;
-    delete collected.github.contributors;
-  });
-  return stats;
+  const packageList = [ pkg.name ]; //getPackageList(pkg);
+  try {
+    const stats = await request({
+      method: 'POST',
+      uri: 'https://api.npms.io/v2/package/mget',
+      json: true,
+      body: packageList,
+      timeout: 5000
+    });
+    Object.values(stats).forEach(({ collected: { metadata, github } }) => {
+      if (metadata) delete metadata.maintainers;
+      if (metadata) delete metadata.readme;
+      if (github) delete github.contributors;
+    });
+    return stats;
+  } catch (error) {
+    console.error(error);
+    return {};
+  }
 };
 
 export default async (entryPoint: string): Promise<Info> => {
+  console.log('collect info...');
+
+  console.log('\tcollect info from file system...');
   const tree = await getTree(entryPoint);
+  console.log('\tdone');
+
+  console.log('\tget npms data');
   const stats = await getStats(tree);
+  console.log('\tdone');
+
+  console.log('done');
+
   return { tree, stats };
 };

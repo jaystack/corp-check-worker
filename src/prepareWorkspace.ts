@@ -17,8 +17,10 @@ export default async (
     version: string;
   }
 ): Promise<string> => {
+  console.log("prepare workspace...")
   await exec(`rm -rf ${join(cwd, folder)}`);
   if (name) await npmInstallByName(`${scope}${name}${version}`, folder);
   else if (json) await npmInstallByJson(json, folder);
+  console.log("done");
   return name ? join(cwd, folder, 'node_modules', name) : join(cwd, folder);
 };
