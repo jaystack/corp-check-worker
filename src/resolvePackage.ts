@@ -8,6 +8,7 @@ export default (
   version?: string;
   json?: string;
 } => {
+  console.log("resolve package...")
   try {
     return { json: JSON.parse(pkgOrJson) };
   } catch (err) {
@@ -17,5 +18,7 @@ export default (
       const [ , scope = '', name = '', version = '' ] = fullPackageName.exec(pkgOrJson);
       return { scope, name, version };
     }
+  } finally {
+    console.log("done")
   }
 };
