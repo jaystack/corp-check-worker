@@ -74,6 +74,6 @@ const getStats = async (pkg: Package) => {
 
 export default async (entryPoint: string): Promise<Info> => {
   const tree = await getTree(entryPoint);
-  //const stats = await getStats(tree);
-  return { tree, stats: {} };
+  const stats = await getStats(tree);
+  return { tree, stats };
 };
