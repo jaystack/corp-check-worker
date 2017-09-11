@@ -6,8 +6,7 @@
   "typings": "lib",
   "scripts": {
     "build": "rimraf lib && tsc",
-    "build:w": "tsc -w",
-    "deploy": "sh deploy.sh"
+    "build:w": "tsc -w"
   },
   "files": [
     "lib"
