@@ -59,6 +59,7 @@ const getPackageList = (pkg: Package, set: Set<string> = new Set<string>()): str
 };
 
 const getStats = async (pkg: Package) => {
+  if (!pkg.name) return {};
   const packageList = [ pkg.name ]; //getPackageList(pkg);
   try {
     const stats = await request({
