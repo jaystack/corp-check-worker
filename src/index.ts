@@ -19,6 +19,7 @@ const run = async (cid: string, pkgOrJson: string) => {
   if (!cid) throw new Error('Missing correlation id');
   const { scope, name, version, json } = resolvePackage(pkgOrJson);
   if (!name && !json) throw new Error('Missing or invalid package name or package.json');
+  console.log('PACKAGE:', name || json);
   try {
     const entryPoint = await prepareWorkspace(CWD, JOB_FOLDER, { json, scope, name, version });
     const info = await collectInfo(entryPoint);
