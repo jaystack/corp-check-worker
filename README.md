@@ -1,8 +1,14 @@
 # corp-check-worker
 Worker layer for corp-check
 
-## How to deploy
+## Developing
 
 ```
-sh deploy.sh
+npm run build:w
+```
+
+## Deploying
+
+```
+npm run deploy
 ```
