@@ -1,5 +1,5 @@
 import { Lambda } from 'aws-sdk';
-import { Info } from './collectInfo';
+import { Info } from './types';
 
 export type Options = {
   region: string;

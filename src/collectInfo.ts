@@ -3,32 +3,13 @@ import { readJson, readdir, pathExists } from 'fs-extra';
 import getLicenseInfo = require('get-license-npm');
 import request = require('request-promise-native');
 import { packageName as packageNamePattern, scope as scopePattern } from './patterns';
-
-export type License = {
-  license: string;
-  licenseFile: boolean;
-  private: boolean;
-};
-
-export type Package = {
-  name: string;
-  version: string;
-  license: License;
-  dependencies: Package[];
-};
-
-export type Info =
-  | {
-      tree: Package;
-      stats: any;
-    }
-  | { error: string };
+import { Info, Package, Meta } from './types';
 
 const getSubFolders = (predicate: (file: string) => boolean) => (files: string[]): string[] => files.filter(predicate);
 const getRegularFolders = getSubFolders(file => packageNamePattern.test(file));
 const getScopedFolders = getSubFolders(file => scopePattern.test(file));
 
-const flatArray = <T>(array: T[][]) => array.reduce((acc, arr) => [ ...acc, ...arr ], []);
+const flatArray = <T>(array: T[][]) => array.reduce((prev, next) => [ ...prev, ...next ], []);
 
 const getDependencies = async (entryPoint: string): Promise<Package[]> => {
   if (!await pathExists(entryPoint)) return [];
@@ -47,7 +28,7 @@ const getTree = async (entryPoint: string): Promise<Package> => {
   return {
     name,
     version,
-    license: { license: license.license || null, licenseFile: !!license.licenseFile, private: !!license.private },
+    license: { type: license.license || null, hasLicenseFile: !!license.licenseFile, isPrivate: !!license.private },
     dependencies: await getDependencies(join(entryPoint, 'node_modules'))
   };
 };
@@ -58,10 +39,11 @@ const getPackageList = (pkg: Package, set: Set<string> = new Set<string>()): str
   return [ ...set ];
 };
 
-const getStats = async (pkg: Package) => {
+const getMeta = async (pkg: Package): Promise<Meta> => {
   if (!pkg.name) return {};
-  const packageList = [ pkg.name ]; //getPackageList(pkg);
-  try {
+  const packageList = getPackageList(pkg);
+  return packageList.reduce((meta, name) => ({ ...meta, [name]: {} }), {});
+  /* try {
     const stats = await request({
       method: 'POST',
       uri: 'https://api.npms.io/v2/package/mget',
@@ -78,7 +60,7 @@ const getStats = async (pkg: Package) => {
   } catch (error) {
     console.error(error);
     return {};
-  }
+  } */
 };
 
 export default async (entryPoint: string): Promise<Info> => {
@@ -88,11 +70,11 @@ export default async (entryPoint: string): Promise<Info> => {
   const tree = await getTree(entryPoint);
   console.log('\tdone');
 
-  console.log('\tget npms data');
-  const stats = await getStats(tree);
+  console.log('\tget meta data');
+  const meta = await getMeta(tree);
   console.log('\tdone');
 
   console.log('done');
 
-  return { tree, stats };
+  return { tree, meta };
 };
