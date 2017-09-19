@@ -36,9 +36,11 @@ export type Meta = {
   [packageName: string]: PackageMeta;
 };
 
-export type Info =
-  | {
-      tree: Package;
-      meta: Meta;
-    }
-  | { error: string };
+export type Error = { error: string };
+
+export type Info = {
+  tree: Package;
+  meta: Meta;
+};
+
+export type Result = Info | Error;

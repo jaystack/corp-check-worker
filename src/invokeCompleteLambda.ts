@@ -1,12 +1,12 @@
 import { Lambda } from 'aws-sdk';
-import { Info } from './types';
+import { Result } from './types';
 
 export type Options = {
   region: string;
   function: string;
 };
 
-export default (cid: string, data: Info, { region, function: FunctionName }: Options) =>
+export default (cid: string, data: Result, { region, function: FunctionName }: Options) =>
   new Promise((resolve, reject) =>
     new Lambda({ region }).invoke(
       { FunctionName, Payload: JSON.stringify({ cid, data }) },
