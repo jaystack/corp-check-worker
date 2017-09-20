@@ -18,18 +18,25 @@ export type Point<T> = {
 
 export type TimeSeries<T> = Point<T>[];
 
-export type PackageMeta = {
-  stars: number;
-  contributors: number;
-  forks: number;
+export type Assignment<T> = {
+  [key: string]: T;
+};
 
-  downloads: TimeSeries<number>;
-  releases: TimeSeries<string>;
-  issues: TimeSeries<number>;
-  commits: TimeSeries<number>;
+export type PackageMeta = {
+  numOfGithubStars: number;
+  numOfNpmStars: number;
+  numOfContributors: number;
+  numOfForks: number;
+  numOfMaintainers: number;
+
+  distTags: Assignment<string>;
+  releases: Assignment<number>;
+
+  downloadFrequency: TimeSeries<number>;
+  issueFrequency: TimeSeries<number>;
+  commitFrequency: TimeSeries<number>;
 
   dependents: string[];
-  ignoring: boolean;
 };
 
 export type Meta = {

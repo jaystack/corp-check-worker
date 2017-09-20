@@ -1,23 +1,26 @@
-import { Meta } from '../types';
+import { Meta, PackageMeta } from '../types';
+import getBulkInfo from './getBulkInfo';
+import getDistTags from './getDistTags';
+import getMaintainers from './getMaintainers';
+import getReleases from './getReleases';
+import getDownloads from './getDownloads';
 
 export default async (packageList: string[]): Promise<Meta> => {
-  return packageList.reduce((meta, name) => ({ ...meta, [name]: {} }), {});
-  /* try {
-    const stats = await request({
-      method: 'POST',
-      uri: 'https://api.npms.io/v2/package/mget',
-      json: true,
-      body: packageList,
-      timeout: 5000
-    });
-    Object.values(stats).forEach(({ collected: { metadata, github } }) => {
-      if (metadata) delete metadata.maintainers;
-      if (metadata) delete metadata.readme;
-      if (github) delete github.contributors;
-    });
-    return stats;
-  } catch (error) {
-    console.error(error);
-    return {};
-  } */
+  const bulkInfo = await getBulkInfo(packageList);
+  const distTags = getDistTags(bulkInfo);
+  const maintainers = getMaintainers(bulkInfo);
+  const releases = getReleases(bulkInfo);
+  const downloads = await getDownloads(packageList);
+  return packageList.reduce(
+    (meta, name, i) => ({
+      ...meta,
+      [name]: {
+        downloadFrequency: downloads[i],
+        distTags: distTags[i],
+        numOfMaintainers: maintainers[i],
+        releases: releases[i]
+      } as PackageMeta
+    }),
+    {}
+  );
 };
