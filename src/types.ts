@@ -40,19 +40,19 @@ export type Repository = {
 export type PackageMeta = {
   repository: Repository;
 
-  numOfGithubStars: number;
-  numOfNpmStars: number;
-  numOfContributors: number;
-  numOfForks: number;
-  numOfMaintainers: number;
-  numOfDependents: number;
+  dependendtsCount: number;
+  maintainersCount: number;
+  starsCount: number;
+  forksCount: number;
+  subscribersCount: number;
 
   distTags: Assignment<string>;
   releases: Assignment<number>;
 
   downloadFrequency: TimeSeries<number>;
-  issueFrequency: TimeSeries<number>;
   commitFrequency: TimeSeries<number>;
+  codeFrequency: TimeSeries<number>;
+  issueFrequency: TimeSeries<{ all: number; open: number }>;
 };
 
 export type Meta = {

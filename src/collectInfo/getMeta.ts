@@ -1,22 +1,24 @@
 import { Meta, PackageMeta } from '../types';
-import getBulkInfo from './getBulkInfo';
+import getNpmData from './getNpmData';
 import getDownloads from './getDownloads';
 import getDependents from './getDependents';
-import getGithubUrls from './getGithubUrls';
+import getRepositories from './getRepositories';
+import getGithubData from './getGithubData';
 
 export default async (packageList: string[]): Promise<Meta> => {
-  const bulkInfo = await getBulkInfo(packageList);
+  const npmData = await getNpmData(packageList);
   const downloads = await getDownloads(packageList);
   const dependents = await getDependents(packageList);
-  const githubUrls = getGithubUrls(bulkInfo);
-  //console.log(githubUrls);
+  const repositories = getRepositories(npmData);
+  const githubData = await getGithubData(repositories);
   return packageList.reduce(
     (meta, name, i) => ({
       ...meta,
       [name]: {
-        ...bulkInfo[i],
+        ...npmData[i],
+        ...githubData[i],
         downloadFrequency: downloads[i],
-        numOfDependents: dependents[i]
+        dependendtsCount: dependents[i]
       } as PackageMeta
     }),
     {}
