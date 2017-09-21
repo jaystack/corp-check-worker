@@ -1,16 +1,14 @@
 import { Assignment, Repository } from '../types';
 import request = require('request-promise-native');
 
-export default async (
-  packageList: string[]
-): Promise<
-  {
-    distTags: Assignment<string>;
-    releases: Assignment<number>;
-    numOfMaintainers: number;
-    repository: Repository;
-  }[]
-> => {
+export type BulkInfo = {
+  distTags: Assignment<string>;
+  releases: Assignment<number>;
+  numOfMaintainers: number;
+  repository: Repository;
+}[];
+
+export default async (packageList: string[]): Promise<BulkInfo> => {
   const { rows } = await request.post('https://replicate.npmjs.com/registry/_all_docs?include_docs=true', {
     json: true,
     body: { keys: packageList }
