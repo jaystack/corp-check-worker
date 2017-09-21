@@ -32,7 +32,14 @@ export type Assignment<T> = {
   [key: string]: T;
 };
 
+export type Repository = {
+  type: string;
+  url: string;
+};
+
 export type PackageMeta = {
+  repository: Repository;
+
   numOfGithubStars: number;
   numOfNpmStars: number;
   numOfContributors: number;
