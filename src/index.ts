@@ -17,11 +17,11 @@ process.on('unhandledRejection', error => {
 
 const run = async (cid: string, pkgOrJson: string) => {
   if (!cid) throw new Error('Missing correlation id');
-  const { scope, name, version, json } = resolvePackage(pkgOrJson);
-  if (!name && !json) throw new Error('Missing or invalid package name or package.json');
-  console.log('PACKAGE:', name || json);
+  const pkg = resolvePackage(pkgOrJson);
+  if (!pkg.name && !pkg.json) throw new Error('Missing or invalid package name or package.json');
+  console.log('PACKAGE:', pkg.signature || pkg.json);
   try {
-    const entryPoint = await prepareWorkspace(CWD, JOB_FOLDER, { json, scope, name, version });
+    const entryPoint = await prepareWorkspace(CWD, JOB_FOLDER, pkg);
     const info = await collectInfo(entryPoint);
     await writeJson(RESULT_FILE, info, { spaces: 2 });
     await invokeCompleteLambda(cid, info, { region: REGION, function: COMPLETE_LAMBDA_NAME });

@@ -1,24 +1,19 @@
+import { PackageSignature } from './types';
 import { fullPackageName } from './patterns';
 
-export default (
-  pkgOrJson: string
-): {
-  scope?: string;
-  name?: string;
-  version?: string;
-  json?: string;
-} => {
-  console.log("resolve package...")
+const resolvePackageSignature = (sign: string): PackageSignature => {
+  if (!fullPackageName.test(sign)) {
+    return {};
+  } else {
+    const [ signature, fullName, rawScope, scope, name, rawVersion, version ] = fullPackageName.exec(sign);
+    return { signature, fullName, rawScope, scope, name, rawVersion, version };
+  }
+};
+
+export default (pkgOrJson: string): PackageSignature & { json?: string } => {
   try {
     return { json: JSON.parse(pkgOrJson) };
   } catch (err) {
-    if (!fullPackageName.test(pkgOrJson)) {
-      return { scope: null };
-    } else {
-      const [ , scope = '', name = '', version = '' ] = fullPackageName.exec(pkgOrJson);
-      return { scope, name, version };
-    }
-  } finally {
-    console.log("done")
+    return resolvePackageSignature(pkgOrJson);
   }
 };
