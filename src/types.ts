@@ -38,6 +38,7 @@ export type PackageMeta = {
   numOfContributors: number;
   numOfForks: number;
   numOfMaintainers: number;
+  numOfDependents: number;
 
   distTags: Assignment<string>;
   releases: Assignment<number>;
@@ -45,8 +46,6 @@ export type PackageMeta = {
   downloadFrequency: TimeSeries<number>;
   issueFrequency: TimeSeries<number>;
   commitFrequency: TimeSeries<number>;
-
-  dependents: string[];
 };
 
 export type Meta = {
