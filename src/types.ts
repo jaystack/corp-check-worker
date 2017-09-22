@@ -32,28 +32,43 @@ export type Assignment<T> = {
   [key: string]: T;
 };
 
+export type Distribution = {
+  [interval: string]: number;
+};
+
+export type Stats = {
+  count: number;
+  openCount: number;
+  distribution: Distribution;
+};
+
 export type Repository = {
   type: string;
   url: string;
 };
 
-export type PackageMeta = {
-  repository: Repository;
-
-  dependendtsCount: number;
-  maintainersCount: number;
+export type GithubData = {
   starsCount: number;
   forksCount: number;
   subscribersCount: number;
-
-  distTags: Assignment<string>;
-  releases: Assignment<number>;
-
-  downloadFrequency: TimeSeries<number>;
   commitFrequency: TimeSeries<number>;
   codeFrequency: TimeSeries<number>;
-  issueFrequency: TimeSeries<{ all: number; open: number }>;
+  issues: Stats;
+  pullRequests: Stats;
 };
+
+export type NpmData = {
+  distTags: Assignment<string>;
+  releases: Assignment<number>;
+  maintainersCount: number;
+  repository: Repository;
+};
+
+export type PackageMeta = GithubData &
+  NpmData & {
+    dependendtsCount: number;
+    downloadFrequency: TimeSeries<number>;
+  };
 
 export type Meta = {
   [packageName: string]: PackageMeta;
