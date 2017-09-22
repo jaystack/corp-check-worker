@@ -24,12 +24,12 @@ export default async (repositories: { owner: string; repo: string }[]): Promise<
     if (!repository) continue;
     const { owner, repo } = repository;
     const { stargazers_count, subscribers_count, forks_count } = await fetch(owner, repo);
-    const issues = await fetch(owner, repo, '/issues', { state: 'all', per_page: 1000 });
+    const issues = await fetch(owner, repo, '/issues', { state: 'all', per_page: 10000 });
     data.push({
       starsCount: stargazers_count,
       forksCount: forks_count,
       subscribersCount: subscribers_count,
-      issueFrequency: getIssueFrequency(issues, 30)
+      issueFrequency: getIssueFrequency(issues)
     });
   }
   return data;
