@@ -11,7 +11,12 @@ export default async (packageList: string[]): Promise<NpmData[]> => {
       ({
         distTags,
         maintainersCount: maintainers ? maintainers.length : null,
-        releases: time ? Object.keys(time).reduce((acc, key) => ({ ...acc, [key]: Date.parse(time[key]) }), {}) : null,
+        releases: time
+          ? Object.keys(time)
+              .filter(key => key !== 'modified' && key !== 'created')
+              .map(key => ({ time: Date.parse(time[key]), value: key }))
+              .sort((a, b) => a.time - b.time)
+          : null,
         repository
       } as NpmData)
   );

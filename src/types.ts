@@ -59,7 +59,7 @@ export type GithubData = {
 
 export type NpmData = {
   distTags: Assignment<string>;
-  releases: Assignment<number>;
+  releases: TimeSeries<string>;
   maintainersCount: number;
   repository: Repository;
 };
