@@ -14,7 +14,10 @@ const fetch = (owner: string, repo: string, endpoint: string = '', query?: Objec
 export default async (repositories: { owner: string; repo: string }[]): Promise<GithubData[]> => {
   const data: GithubData[] = [];
   for (const repository of repositories) {
-    if (!repository) continue;
+    if (!repository) {
+      data.push({} as GithubData);
+      continue;
+    }
     const { owner, repo } = repository;
     const { stargazers_count, subscribers_count, forks_count } = await fetch(owner, repo);
     const issueStats = await getGithubIssueStats(`${owner}/${repo}`, { tokens: [ TOKEN ] });
