@@ -28,10 +28,6 @@ export type Point<T> = {
 
 export type TimeSeries<T> = Point<T>[];
 
-export type Assignment<T> = {
-  [key: string]: T;
-};
-
 export type Distribution = {
   [interval: string]: number;
 };
@@ -57,8 +53,13 @@ export type GithubData = {
   pullRequests: Stats;
 };
 
+export type DistTag = {
+  version: string;
+  tag: string;
+};
+
 export type NpmData = {
-  distTags: Assignment<string>;
+  distTags: DistTag[];
   releases: TimeSeries<string>;
   maintainersCount: number;
   repository: Repository;

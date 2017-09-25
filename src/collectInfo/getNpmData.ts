@@ -9,7 +9,7 @@ export default async (packageList: string[]): Promise<NpmData[]> => {
   return rows.map(
     ({ doc: { 'dist-tags': distTags = null, maintainers = null, time = null, repository = null } = {} }) =>
       ({
-        distTags,
+        distTags: Object.keys(distTags).map(tag => ({ version: distTags[tag], tag })),
         maintainersCount: maintainers ? maintainers.length : null,
         releases: time
           ? Object.keys(time)
