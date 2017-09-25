@@ -1,8 +1,8 @@
-import { NpmData } from './getNpmData';
+import { NpmData } from '../types';
 
 const githubRepoPattern = /^git\+https:\/\/github.com\/(.+)\/(.+)\.git/;
 
-export default (npmData: NpmData): { owner: string; repo: string }[] =>
+export default (npmData: NpmData[]): { owner: string; repo: string }[] =>
   npmData.map(({ repository }) => {
     if (!repository) return null;
     if (!githubRepoPattern.test(repository.url)) return null;
