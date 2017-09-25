@@ -1,17 +1,51 @@
 import request = require('request-promise-native');
 import { TimeSeries } from '../types';
+import { scope as scopePattern } from '../patterns';
+import runSeries from '../runSeries';
 
-const prepareDownloads = (data: { downloads: number; day: string }[]): TimeSeries<number> =>
-  data.map(({ downloads, day }) => ({ time: Date.parse(day), value: downloads }));
+const filterPackages = (predicate: (name: string) => boolean) => (packageList: string[]) =>
+  packageList.filter(predicate);
 
-export default async (packageList: string[]): Promise<TimeSeries<number>[]> => {
-  if (packageList.length === 0) return [];
+const getScopedPackages = filterPackages(name => scopePattern.test(name));
+const getRegularPackages = filterPackages(name => !scopePattern.test(name));
+
+const getBulkDownloads = async (packageList: string[]): Promise<{ name: string; downloads: TimeSeries<number> }[]> => {
   const response = await request.get(`https://api.npmjs.org/downloads/range/last-month/${packageList.join(',')}`, {
     json: true
   });
-  if (packageList.length === 1) {
-    return [ prepareDownloads(response.downloads) ];
-  } else {
-    return packageList.map(name => prepareDownloads(response[name].downloads));
-  }
+  return packageList.length === 1
+    ? [ prepareDownloads(packageList[0], response.downloads) ]
+    : packageList.map(name => prepareDownloads(name, response[name].downloads));
+};
+
+const getDownloads = async (name: string): Promise<{ name: string; downloads: TimeSeries<number> }> => {
+  const response = await request.get(`https://api.npmjs.org/downloads/range/last-month/${name}`, {
+    json: true
+  });
+  return prepareDownloads(name, response.downloads);
+};
+
+const prepareDownloads = (
+  name: string,
+  data: { downloads: number; day: string }[]
+): { name: string; downloads: TimeSeries<number> } => ({
+  name,
+  downloads: data.map(({ downloads, day }) => ({ time: Date.parse(day), value: downloads }))
+});
+
+const sortByOriginalIndex = (packageList: string[]) => ({ name: aName }, { name: bName }) => {
+  const aIndex = packageList.findIndex(name => name === aName);
+  const bIndex = packageList.findIndex(name => name === bName);
+  return aIndex - bIndex;
+};
+
+export default async (packageList: string[]): Promise<TimeSeries<number>[]> => {
+  if (packageList.length === 0) return [];
+  const regularPackages = getRegularPackages(packageList);
+  const scopedPackages = getScopedPackages(packageList);
+  const bulkDownloads = await getBulkDownloads(regularPackages);
+  const scopedDownloads = await runSeries(scopedPackages.map(name => getDownloads.bind(null, name)));
+  return [ ...bulkDownloads, ...scopedDownloads ]
+    .sort(sortByOriginalIndex(packageList))
+    .map(({ downloads }) => downloads);
 };
