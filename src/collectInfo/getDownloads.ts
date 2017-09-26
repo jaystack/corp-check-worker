@@ -15,7 +15,7 @@ const getBulkDownloads = async (packageList: string[]): Promise<{ name: string; 
   });
   return packageList.length === 1
     ? [ prepareDownloads(packageList[0], response.downloads) ]
-    : packageList.map(name => prepareDownloads(name, response[name].downloads));
+    : packageList.map(name => prepareDownloads(name, (response[name] || {}).downloads));
 };
 
 const getDownloads = async (name: string): Promise<{ name: string; downloads: TimeSeries<number> }> => {
@@ -30,7 +30,7 @@ const prepareDownloads = (
   data: { downloads: number; day: string }[]
 ): { name: string; downloads: TimeSeries<number> } => ({
   name,
-  downloads: data.map(({ downloads, day }) => ({ time: Date.parse(day), value: downloads }))
+  downloads: data ? data.map(({ downloads, day }) => ({ time: Date.parse(day), value: downloads })) : null
 });
 
 const sortByOriginalIndex = (packageList: string[]) => ({ name: aName }, { name: bName }) => {

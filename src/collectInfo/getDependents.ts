@@ -4,9 +4,7 @@ import runSeries from '../runSeries';
 
 const getDependentCount = async (name: string): Promise<number> => {
   try {
-    const {
-      rows: [ { value } ]
-    } = await request.get(`https://replicate.npmjs.com/registry/_design/app/_view/dependedUpon`, {
+    const { rows } = await request.get(`https://replicate.npmjs.com/registry/_design/app/_view/dependedUpon`, {
       json: true,
       qs: {
         group_level: 1,
@@ -14,7 +12,8 @@ const getDependentCount = async (name: string): Promise<number> => {
         end_key: `["${name}", {}]`
       }
     });
-    return value;
+    if (rows.length === 0) return null;
+    return rows[0].value;
   } catch (error) {
     console.error(error);
     return null;

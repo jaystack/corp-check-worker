@@ -13,17 +13,15 @@ const fetch = (owner: string, repo: string, endpoint: string = '', query?: Objec
   });
 
 const getGithubData = async (repository: { owner: string; repo: string }): Promise<GithubData> => {
-  if (!repository) {
-    return {} as GithubData;
-  }
+  if (!repository) return {} as GithubData;
   const { owner, repo } = repository;
   const { stargazers_count, subscribers_count, forks_count } = await fetch(owner, repo);
-  const issueStats = await getGithubIssueStats(`${owner}/${repo}`, { tokens: [ TOKEN ] });
+  //const issueStats = await getGithubIssueStats(`${owner}/${repo}`, { tokens: [ TOKEN ] });
   return {
     starsCount: stargazers_count,
     forksCount: forks_count,
-    subscribersCount: subscribers_count,
-    ...issueStats
+    subscribersCount: subscribers_count
+    //...issueStats
   } as GithubData;
 };
 

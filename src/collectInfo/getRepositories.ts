@@ -1,6 +1,6 @@
 import { NpmData } from '../types';
 
-const githubRepoPattern = /^git\+https:\/\/github.com\/(.+)\/(.+)\.git/;
+const githubRepoPattern = /github\.com\/([^./]+)\/([^./]+)(\.git)?$/;
 
 export default (npmData: NpmData[]): { owner: string; repo: string }[] =>
   npmData.map(({ repository }) => {
