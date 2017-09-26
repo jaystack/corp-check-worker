@@ -14,11 +14,11 @@ export type License = {
   isPrivate: boolean;
 };
 
-export type Package = {
+export type Node = {
   name: string;
   version: string;
   license: License;
-  dependencies: Package[];
+  dependencies: Node[];
 };
 
 export type Point<T> = {
@@ -78,7 +78,7 @@ export type Meta = {
 export type Error = { error: string };
 
 export type Info = {
-  tree: Package;
+  tree: Node;
   meta: Meta;
 };
 

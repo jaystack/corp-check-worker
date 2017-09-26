@@ -1,7 +1,7 @@
 import { join } from 'path';
 import { readJson, readdir, pathExists } from 'fs-extra';
 import getLicenseInfo = require('get-license-npm');
-import { Package } from '../types';
+import { Node } from '../types';
 import { packageName as packageNamePattern, scope as scopePattern } from '../patterns';
 
 const getSubFolders = (predicate: (file: string) => boolean) => (files: string[]): string[] => files.filter(predicate);
@@ -10,7 +10,7 @@ const getScopedFolders = getSubFolders(file => scopePattern.test(file));
 
 const flatArray = <T>(array: T[][]) => array.reduce((prev, next) => [ ...prev, ...next ], []);
 
-const getDependencies = async (entryPoint: string): Promise<Package[]> => {
+const getDependencies = async (entryPoint: string): Promise<Node[]> => {
   if (!await pathExists(entryPoint)) return [];
   const files = await readdir(entryPoint);
   const regularFolders = getRegularFolders(files);
@@ -21,7 +21,7 @@ const getDependencies = async (entryPoint: string): Promise<Package[]> => {
   return [ ...regularDependencies, ...scopedDependencies ];
 };
 
-const getTree = async (entryPoint: string): Promise<Package> => {
+const getTree = async (entryPoint: string): Promise<Node> => {
   const { name, version } = await readJson(join(entryPoint, 'package.json'));
   const license = await getLicenseInfo(entryPoint);
   return {
