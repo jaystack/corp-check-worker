@@ -2,8 +2,8 @@ import { writeJson } from 'fs-extra';
 import resolvePackage from './resolvePackage';
 import prepareWorkspace from './prepareWorkspace';
 import collectInfo from './collectInfo';
-import invokeLambda from './invokeLambda';
-import { CWD, JOB_FOLDER, RESULT_FILE, REGION, COMPLETE_LAMBDA_NAME } from './consts';
+import complete from './complete';
+import { CWD, JOB_FOLDER, RESULT_FILE } from './consts';
 
 const [ , , cid, pkg ] = process.argv;
 
@@ -20,10 +20,10 @@ const run = async (cid: string, pkgOrJson: string) => {
     const entryPoint = await prepareWorkspace(CWD, JOB_FOLDER, pkg);
     const info = await collectInfo(entryPoint);
     await writeJson(RESULT_FILE, info, { spaces: 2 });
-    await invokeLambda(REGION, COMPLETE_LAMBDA_NAME, { cid, data: info });
+    await complete(cid, info);
   } catch (error) {
     console.error(error);
-    await invokeLambda(REGION, COMPLETE_LAMBDA_NAME, { cid, data: { error: error.message } });
+    await complete(cid, { error: error.message });
   }
 };
 

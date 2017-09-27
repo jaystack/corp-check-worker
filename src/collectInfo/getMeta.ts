@@ -4,6 +4,7 @@ import getDownloads from './getDownloads';
 import getDependents from './getDependents';
 import getRepositories from './getRepositories';
 import getGithubData from './getGithubData';
+import {} from '../consts'
 
 export default async (packageList: string[]): Promise<Meta> => {
   const npmData = await getNpmData(packageList);
