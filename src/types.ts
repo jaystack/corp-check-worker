@@ -48,7 +48,7 @@ export type GithubData = {
   forksCount: number;
   subscribersCount: number;
   commitFrequency: TimeSeries<number>;
-  codeFrequency: TimeSeries<number>;
+  codeFrequency: TimeSeries<[number, number]>;
   issues: Stats;
   pullRequests: Stats;
 };
