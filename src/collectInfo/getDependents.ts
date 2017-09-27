@@ -1,6 +1,7 @@
 import request = require('request-promise-native');
 import sleep from '../sleep';
 import runSeries from '../runSeries';
+import { Registry } from '../types';
 
 const getDependentCount = async (name: string): Promise<number> => {
   try {
@@ -20,5 +21,7 @@ const getDependentCount = async (name: string): Promise<number> => {
   }
 };
 
-export default (packageList: string[]): Promise<number[]> =>
-  runSeries(packageList.map(name => getDependentCount.bind(null, name)));
+export default (packageList: string[]): Promise<Registry<number>> =>
+  runSeries(packageList.map(name => getDependentCount.bind(null, name))).then(downloads =>
+    downloads.reduce((acc, curr, i) => ({ ...acc, [packageList[i]]: curr }), {})
+  );

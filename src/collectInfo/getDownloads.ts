@@ -1,5 +1,5 @@
 import request = require('request-promise-native');
-import { TimeSeries } from '../types';
+import { TimeSeries, Registry } from '../types';
 import { scope as scopePattern } from '../patterns';
 import runSeries from '../runSeries';
 
@@ -39,13 +39,11 @@ const sortByOriginalIndex = (packageList: string[]) => ({ name: aName }, { name:
   return aIndex - bIndex;
 };
 
-export default async (packageList: string[]): Promise<TimeSeries<number>[]> => {
-  if (packageList.length === 0) return [];
+export default async (packageList: string[]): Promise<Registry<TimeSeries<number>>> => {
+  if (packageList.length === 0) return {};
   const regularPackages = getRegularPackages(packageList);
   const scopedPackages = getScopedPackages(packageList);
   const bulkDownloads = await getBulkDownloads(regularPackages);
   const scopedDownloads = await runSeries(scopedPackages.map(name => getDownloads.bind(null, name)));
-  return [ ...bulkDownloads, ...scopedDownloads ]
-    .sort(sortByOriginalIndex(packageList))
-    .map(({ downloads }) => downloads);
+  return [ ...bulkDownloads, ...scopedDownloads ].reduce((acc, curr) => ({ ...acc, [curr.name]: curr.downloads }), {});
 };

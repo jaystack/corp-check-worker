@@ -1,5 +1,5 @@
 import request = require('request-promise-native');
-import { GithubData, TimeSeries } from '../types';
+import { GithubData, TimeSeries, Registry } from '../types';
 import getGithubIssueStats = require('gh-issues-stats');
 import runSeries from '../runSeries';
 
@@ -12,8 +12,10 @@ const fetch = (owner: string, repo: string, endpoint: string = '', query?: Objec
     qs: query
   });
 
-const prepareCommitFrequency = (commitActivity: { total: number; week: number }[]): TimeSeries<number> =>
-  Array.isArray(commitActivity) ? commitActivity.map(({ total, week }) => ({ time: week * 1000, value: total })) : null;
+const prepareCommitFrequency = (commitFrequency: { total: number; week: number }[]): TimeSeries<number> =>
+  Array.isArray(commitFrequency)
+    ? commitFrequency.map(({ total, week }) => ({ time: week * 1000, value: total }))
+    : null;
 
 const prepareCodeFrequency = (codeFrequency: [number, number, number][]): TimeSeries<[number, number]> =>
   Array.isArray(codeFrequency)
@@ -37,5 +39,7 @@ const getGithubData = async (repository: { owner: string; repo: string }): Promi
   } as GithubData;
 };
 
-export default async (repositories: { owner: string; repo: string }[]): Promise<GithubData[]> =>
-  runSeries(repositories.map(repository => getGithubData.bind(null, repository)));
+export default async (repositories: Registry<{ owner: string; repo: string }>): Promise<Registry<GithubData>> =>
+  runSeries(Object.keys(repositories).map(name => getGithubData.bind(null, repositories[name]))).then(bulkGithubData =>
+    Object.keys(repositories).reduce((acc, name, i) => ({ ...acc, [name]: bulkGithubData[i] }), {})
+  );

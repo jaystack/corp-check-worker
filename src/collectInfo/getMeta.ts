@@ -12,13 +12,13 @@ export default async (packageList: string[]): Promise<Meta> => {
   const repositories = getRepositories(npmData);
   const githubData = await getGithubData(repositories);
   return packageList.reduce(
-    (meta, name, i) => ({
+    (meta, name) => ({
       ...meta,
       [name]: {
-        ...npmData[i],
-        ...githubData[i],
-        downloadFrequency: downloads[i],
-        dependendtsCount: dependents[i]
+        ...npmData[name],
+        ...githubData[name],
+        downloadFrequency: downloads[name],
+        dependendtsCount: dependents[name]
       } as PackageMeta
     }),
     {}

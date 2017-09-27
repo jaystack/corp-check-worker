@@ -1,3 +1,7 @@
+export type Registry<T> = {
+  [key: string]: T;
+};
+
 export type PackageSignature = {
   signature?: string;
   fullName?: string;
