@@ -8,9 +8,7 @@ import getGithubData from './getGithubData';
 
 export default async (packageList: string[]): Promise<Meta> => {
   const cache = await getCache(packageList);
-  console.log("CACHE", Object.keys(cache));
   const uncachedPackages = packageList.filter(name => !(name in cache));
-  console.log("UNCACHED PACKAGES", uncachedPackages);
   const npmData = await getNpmData(uncachedPackages);
   const downloads = await getDownloads(uncachedPackages);
   const dependents = await getDependents(uncachedPackages);
