@@ -1,18 +1,22 @@
 import { Meta, PackageMeta } from '../types';
+import getCache from './getCache';
 import getNpmData from './getNpmData';
 import getDownloads from './getDownloads';
 import getDependents from './getDependents';
 import getRepositories from './getRepositories';
 import getGithubData from './getGithubData';
-import {} from '../consts'
 
 export default async (packageList: string[]): Promise<Meta> => {
-  const npmData = await getNpmData(packageList);
-  const downloads = await getDownloads(packageList);
-  const dependents = await getDependents(packageList);
+  const cache = await getCache(packageList);
+  console.log("CACHE", Object.keys(cache));
+  const uncachedPackages = packageList.filter(name => !(name in cache));
+  console.log("UNCACHED PACKAGES", uncachedPackages);
+  const npmData = await getNpmData(uncachedPackages);
+  const downloads = await getDownloads(uncachedPackages);
+  const dependents = await getDependents(uncachedPackages);
   const repositories = getRepositories(npmData);
   const githubData = await getGithubData(repositories);
-  return packageList.reduce(
+  return uncachedPackages.reduce(
     (meta, name) => ({
       ...meta,
       [name]: {
@@ -22,6 +26,6 @@ export default async (packageList: string[]): Promise<Meta> => {
         dependendtsCount: dependents[name]
       } as PackageMeta
     }),
-    {}
+    cache
   );
 };
