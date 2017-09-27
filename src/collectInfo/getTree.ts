@@ -2,7 +2,7 @@ import { join } from 'path';
 import { readJson, readdir, pathExists } from 'fs-extra';
 import getLicenseInfo = require('get-license-npm');
 import { Node } from '../types';
-import { packageName as packageNamePattern, scope as scopePattern } from '../patterns';
+import { packageName as packageNamePattern, scope as scopePattern } from '../consts';
 
 const getSubFolders = (predicate: (file: string) => boolean) => (files: string[]): string[] => files.filter(predicate);
 const getRegularFolders = getSubFolders(file => packageNamePattern.test(file));

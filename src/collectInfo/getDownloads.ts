@@ -1,7 +1,7 @@
 import request = require('request-promise-native');
 import { TimeSeries, Registry } from '../types';
-import { scope as scopePattern } from '../patterns';
-import runSeries from '../runSeries';
+import { scope as scopePattern } from '../consts';
+import runSeries from '../utils/runSeries';
 
 const filterPackages = (predicate: (name: string) => boolean) => (packageList: string[]) =>
   packageList.filter(predicate);

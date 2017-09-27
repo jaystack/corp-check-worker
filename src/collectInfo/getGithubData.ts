@@ -1,7 +1,7 @@
 import request = require('request-promise-native');
 import { GithubData, TimeSeries, Registry } from '../types';
 import getGithubIssueStats = require('gh-issues-stats');
-import runSeries from '../runSeries';
+import runSeries from '../utils/runSeries';
 
 const TOKEN = '5907a5849829f615a5004fbb362351f3a7897511';
 

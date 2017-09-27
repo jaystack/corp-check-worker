@@ -1,6 +1,5 @@
 import request = require('request-promise-native');
-import sleep from '../sleep';
-import runSeries from '../runSeries';
+import runSeries from '../utils/runSeries';
 import { Registry } from '../types';
 
 const getDependentCount = async (name: string): Promise<number> => {

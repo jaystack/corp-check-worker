@@ -1,5 +1,5 @@
 import { Lambda } from 'aws-sdk';
-import { REGION } from './consts';
+import { REGION } from '../consts';
 
 export default <T>(functionName: string, payload: Object): Promise<T> =>
   new Promise((resolve, reject) =>

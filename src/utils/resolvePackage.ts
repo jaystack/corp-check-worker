@@ -1,5 +1,5 @@
-import { PackageSignature } from './types';
-import { fullPackageName } from './patterns';
+import { PackageSignature } from '../types';
+import { fullPackageName } from '../consts';
 
 const resolvePackageSignature = (sign: string): PackageSignature => {
   if (!fullPackageName.test(sign)) {

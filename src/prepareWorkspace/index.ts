@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { PackageSignature } from './types';
+import { PackageSignature } from '../types';
 import exec from './exec';
 import { installByName as npmInstallByName, installByJson as npmInstallByJson } from './npm';
 

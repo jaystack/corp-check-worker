@@ -1,8 +1,8 @@
 import { writeJson } from 'fs-extra';
-import resolvePackage from './resolvePackage';
+import resolvePackage from './utils/resolvePackage';
 import prepareWorkspace from './prepareWorkspace';
 import collectInfo from './collectInfo';
-import complete from './complete';
+import complete from './lambda/complete';
 import { CWD, JOB_FOLDER, RESULT_FILE } from './consts';
 
 const [ , , cid, pkg ] = process.argv;

@@ -1,5 +1,5 @@
 import { Meta, PackageMeta } from '../types';
-import getCache from './getCache';
+import getCache from '../lambda/getCache';
 import getNpmData from './getNpmData';
 import getDownloads from './getDownloads';
 import getDependents from './getDependents';
