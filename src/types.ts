@@ -69,11 +69,21 @@ export type NpmData = {
   repository: Repository;
 };
 
-export type PackageMeta = GithubData &
+/* export type PackageMeta = GithubData &
   NpmData & {
     dependendtsCount: number;
     downloadFrequency: TimeSeries<number>;
-  };
+  }; */
+
+export type NpmScores = {
+  quality: number;
+  popularity: number;
+  maintenance: number;
+}
+
+export type PackageMeta = {
+  npmScores: NpmScores
+}
 
 export type Meta = {
   [packageName: string]: PackageMeta;

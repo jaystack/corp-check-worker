@@ -1,12 +1,28 @@
 import { Meta, PackageMeta } from '../types';
 import getCache from '../lambda/getCache';
-import getNpmData from './getNpmData';
+import getNpmScores from './getNpmScores';
+/* import getNpmData from './getNpmData';
 import getDownloads from './getDownloads';
 import getDependents from './getDependents';
 import getRepositories from './getRepositories';
-import getGithubData from './getGithubData';
+import getGithubData from './getGithubData'; */
 
 export default async (packageList: string[]): Promise<Meta> => {
+  const cache = await getCache(packageList);
+  const uncachedPackages = packageList.filter(name => !(name in cache));
+  const npmScores = await getNpmScores(packageList);
+  return uncachedPackages.reduce(
+    (meta, name) => ({
+      ...meta,
+      [name]: {
+        npmScores: npmScores[name]
+      } as PackageMeta
+    }),
+    cache
+  );
+};
+
+/* export default async (packageList: string[]): Promise<Meta> => {
   const cache = await getCache(packageList);
   const uncachedPackages = packageList.filter(name => !(name in cache));
   const npmData = await getNpmData(uncachedPackages);
@@ -27,3 +43,4 @@ export default async (packageList: string[]): Promise<Meta> => {
     cache
   );
 };
+ */
