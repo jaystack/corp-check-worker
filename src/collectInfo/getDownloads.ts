@@ -33,12 +33,6 @@ const prepareDownloads = (
   downloads: data ? data.map(({ downloads, day }) => ({ time: Date.parse(day), value: downloads })) : null
 });
 
-const sortByOriginalIndex = (packageList: string[]) => ({ name: aName }, { name: bName }) => {
-  const aIndex = packageList.findIndex(name => name === aName);
-  const bIndex = packageList.findIndex(name => name === bName);
-  return aIndex - bIndex;
-};
-
 export default async (packageList: string[]): Promise<Registry<TimeSeries<number>>> => {
   if (packageList.length === 0) return {};
   const regularPackages = getRegularPackages(packageList);
