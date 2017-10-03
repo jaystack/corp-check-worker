@@ -10,7 +10,7 @@ const getNpmScores = async (packageName: string): Promise<NpmScores> => {
     })
     .catch(err => ({ objects: [] }));
   const result = objects.find(({ package: { name } }) => name === packageName);
-  return result && result.socre && result.score.detail ? result.score.detail : {};
+  return result && result.score && result.score.detail ? result.score.detail : {};
 };
 
 export default (packageList: string[]) =>
