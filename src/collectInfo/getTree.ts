@@ -24,10 +24,13 @@ const getDependencies = async (entryPoint: string): Promise<Node[]> => {
 const getTree = async (entryPoint: string): Promise<Node> => {
   const { name, version } = await readJson(join(entryPoint, 'package.json'));
   const license = await getLicenseInfo(entryPoint);
+  const licenseValue = license.license || null;
+  const licenseType = (licenseValue && licenseValue.type) || licenseValue;
+
   return {
     name,
     version,
-    license: { type: license.license || null, hasLicenseFile: !!license.licenseFile, isPrivate: !!license.private },
+    license: { type: licenseType, hasLicenseFile: !!license.licenseFile, isPrivate: !!license.private },
     dependencies: await getDependencies(join(entryPoint, 'node_modules'))
   };
 };
