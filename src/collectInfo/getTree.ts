@@ -13,6 +13,7 @@ const flatArray = <T>(array: T[][]) => array.reduce((prev, next) => [ ...prev, .
 const getDependencies = async (entryPoint: string): Promise<Node[]> => {
   if (!await pathExists(entryPoint)) return [];
   const files = await readdir(entryPoint);
+  console.log(entryPoint, files);
   const regularFolders = getRegularFolders(files);
   const scopedFolders = getScopedFolders(files);
   const regularDependencies = await Promise.all(regularFolders.map(folder => getTree(join(entryPoint, folder))));
