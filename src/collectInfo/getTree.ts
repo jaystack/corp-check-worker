@@ -13,7 +13,6 @@ const flatArray = <T>(array: T[][]) => array.reduce((prev, next) => [ ...prev, .
 const getDependencies = async (entryPoint: string): Promise<Node[]> => {
   if (!await pathExists(entryPoint)) return [];
   const files = await readdir(entryPoint);
-  console.log(entryPoint, files);
   const regularFolders = getRegularFolders(files);
   const scopedFolders = getScopedFolders(files);
   const regularDependencies = await Promise.all(regularFolders.map(folder => getTree(join(entryPoint, folder))));
@@ -23,6 +22,7 @@ const getDependencies = async (entryPoint: string): Promise<Node[]> => {
 };
 
 const getTree = async (entryPoint: string): Promise<Node> => {
+  console.log(await readdir(entryPoint));
   const { name, version } = await readJson(join(entryPoint, 'package.json'));
   const license = await getLicenseInfo(entryPoint);
   const licenseValue = license.license || null;
