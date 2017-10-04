@@ -8,7 +8,5 @@ export const installByName = (pkg: string, folder: string, options?: ExecOptions
 export const installByJson = async (json: string, folder: string, options?: ExecOptions) => {
   await ensureDir(folder);
   await writeJSON(join(folder, 'package.json'), json);
-  console.log('env', process.env);
-  console.log(options);
   return await exec(`npm install --legacy-bundling`, { ...options, cwd: folder });
 };
