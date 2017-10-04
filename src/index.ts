@@ -23,7 +23,7 @@ const run = async (cid: string, pkgOrJson: string) => {
     await complete(cid, info);
   } catch (error) {
     console.error(error);
-    await complete(cid, { error: error.message });
+    await complete(cid, { error: error.message || JSON.stringify(error) });
   }
 };
 
