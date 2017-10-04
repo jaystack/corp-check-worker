@@ -9,7 +9,7 @@ export default async (
   { json, signature, scope, name }: PackageSignature & { json?: string }
 ): Promise<string> => {
   await exec(`rm -rf ${join(cwd, folder)}`);
-  if (name) await npmInstallByName(signature, folder, { stream: process.stdout });
+  if (name) await npmInstallByName(signature, folder);
   else if (json) await npmInstallByJson(json, folder);
 
   if (scope && name) {

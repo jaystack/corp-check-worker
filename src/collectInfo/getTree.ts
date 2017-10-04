@@ -22,6 +22,9 @@ const getDependencies = async (entryPoint: string): Promise<Node[]> => {
 };
 
 const getTree = async (entryPoint: string): Promise<Node> => {
+  console.log('entryPoint', entryPoint);
+  console.log(await readdir(join(entryPoint, '../node_modules')));
+  console.log(await readdir(entryPoint));
   const { name, version } = await readJson(join(entryPoint, 'package.json'));
   const license = await getLicenseInfo(entryPoint);
   const licenseValue = license.license || null;
