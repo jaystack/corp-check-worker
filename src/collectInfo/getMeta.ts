@@ -9,8 +9,10 @@ import getGithubData from './getGithubData'; */
 
 export default async (packageList: string[]): Promise<Meta> => {
   const cache = await getCache(packageList);
+  console.log('cache', Object.keys(cache));
   const uncachedPackages = packageList.filter(name => !(name in cache));
-  const npmScores = await getNpmScores(packageList);
+  console.log('uncachedPackages', uncachedPackages);
+  const npmScores = await getNpmScores(uncachedPackages);
   return uncachedPackages.reduce(
     (meta, name) => ({
       ...meta,
