@@ -13,8 +13,8 @@ export const fetchFromS3 = (key: string): Promise<any> =>
     })
   );
 
-export const resolveS3Key = (value: string): string => {
-  if (!s3Pattern.test(value)) return null;
-  const [ , key ] = s3Pattern.exec(value);
+export const resolveS3Key = (s3Signature: string): string => {
+  if (!s3Pattern.test(s3Signature)) return null;
+  const [ , key ] = s3Pattern.exec(s3Signature);
   return key;
 };

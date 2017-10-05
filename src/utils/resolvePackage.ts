@@ -1,6 +1,6 @@
 import { PackageSignature } from '../types';
 import { fullPackageName, s3Pattern, REGION, S3_BUCKET_NAME } from '../consts';
-import { resolveS3Key, fetchFromS3 } from '../aws/s3';
+import resolveJson from './resolveJson';
 
 const resolvePackageSignature = (sign: string): PackageSignature => {
   if (!fullPackageName.test(sign)) {
@@ -12,10 +12,6 @@ const resolvePackageSignature = (sign: string): PackageSignature => {
 };
 
 export default async (pkgOrJson: string): Promise<PackageSignature & { json?: string }> => {
-  try {
-    return { json: JSON.parse(pkgOrJson) };
-  } catch (err) {
-    const key = resolveS3Key(pkgOrJson);
-    return key ? { json: await fetchFromS3(key) } : resolvePackageSignature(pkgOrJson);
-  }
+  const json = await resolveJson(pkgOrJson);
+  return json ? { json } : resolvePackageSignature(pkgOrJson);
 };
