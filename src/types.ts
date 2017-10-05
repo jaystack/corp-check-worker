@@ -79,21 +79,19 @@ export type NpmScores = {
   quality: number;
   popularity: number;
   maintenance: number;
-}
+};
 
 export type PackageMeta = {
-  npmScores: NpmScores
-}
+  npmScores: NpmScores;
+};
 
 export type Meta = {
   [packageName: string]: PackageMeta;
 };
-
-export type Error = { error: string };
 
 export type Info = {
   tree: Node;
   meta: Meta;
 };
 
-export type Result = Info | Error;
+export type Result = { data: Info } | { error: string };

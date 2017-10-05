@@ -18,13 +18,11 @@ const run = async (cid: string, pkgOrJson: string) => {
   console.log('PACKAGE:', pkg.signature || pkg.json);
   try {
     const entryPoint = await prepareWorkspace(CWD, JOB_FOLDER, pkg);
-    const info = await collectInfo(entryPoint);
-    await writeJson(RESULT_FILE, info, { spaces: 2 });
-    await complete(cid, info);
+    const data = await collectInfo(entryPoint);
+    await writeJson(RESULT_FILE, data, { spaces: 2 });
+    await complete(cid, { data });
   } catch (error) {
-    console.error("FULL ERROR", error);
-    console.error("ERROR MSG", error.message || JSON.stringify(error));
-    console.error("RESPONSE", JSON.stringify({ error: error.message || JSON.stringify(error) }, null, 2));
+    console.error(error);
     await complete(cid, { error: error.message || JSON.stringify(error) });
   }
 };
