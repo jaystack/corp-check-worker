@@ -1,6 +1,7 @@
 import program = require('commander');
 import { writeJson } from 'fs-extra';
 import resolvePackage from './utils/resolvePackage';
+import resolveJson from './utils/resolveJson';
 import prepareWorkspace from './prepareWorkspace';
 import collectInfo from './collectInfo';
 import complete from './aws/lambda/complete';
@@ -21,9 +22,11 @@ program
       if (!cid) throw new Error('Missing correlation id');
       const pkg = await resolvePackage(pkgOrJson);
       if (!pkg.name && !pkg.json) throw new Error('Missing or invalid package name or package.json');
-      console.log('package-lock:', program.packageLock, 'yarn-lock:', program.yarnLock);
+      const packageLock = await resolveJson(program.packageLock);
+      const yarnLock = await resolveJson(program.yarnLock);
       console.log('PACKAGE:', pkg.signature || pkg.json);
-      const entryPoint = await prepareWorkspace(CWD, JOB_FOLDER, pkg);
+      console.log('package-lock:', packageLock, 'yarn-lock:', yarnLock);
+      const entryPoint = await prepareWorkspace(CWD, JOB_FOLDER, pkg, { packageLock, yarnLock });
       const data = await collectInfo(entryPoint);
       await writeJson(RESULT_FILE, data, { spaces: 2 });
       await complete(cid, { data });
