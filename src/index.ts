@@ -3,7 +3,7 @@ import { writeJson } from 'fs-extra';
 import resolvePackage from './utils/resolvePackage';
 import prepareWorkspace from './prepareWorkspace';
 import collectInfo from './collectInfo';
-import complete from './lambda/complete';
+import complete from './aws/lambda/complete';
 import { CWD, JOB_FOLDER, RESULT_FILE } from './consts';
 const packageJson = require('../package.json');
 

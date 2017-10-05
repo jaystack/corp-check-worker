@@ -1,5 +1,5 @@
 import { Meta, PackageMeta } from '../types';
-import getCache from '../lambda/getCache';
+import getCache from '../aws/lambda/getCache';
 import getNpmScores from './getNpmScores';
 /* import getNpmData from './getNpmData';
 import getDownloads from './getDownloads';
