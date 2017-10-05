@@ -22,7 +22,9 @@ const run = async (cid: string, pkgOrJson: string) => {
     await writeJson(RESULT_FILE, info, { spaces: 2 });
     await complete(cid, info);
   } catch (error) {
-    console.error(error);
+    console.error("FULL ERROR", error);
+    console.error("ERROR MSG", error.message || JSON.stringify(error));
+    console.error("RESPONSE", JSON.stringify({ error: error.message || JSON.stringify(error) }, null, 2));
     await complete(cid, { error: error.message || JSON.stringify(error) });
   }
 };
