@@ -1,7 +1,9 @@
 import { stringify } from 'querystring';
 import request = require('request-promise-native');
 import { NpmScores } from '../types';
-import runSeries from '../utils/runSeries';
+import runParallel from '../utils/runParallel';
+
+const PARALLEL_LIMIT = 3;
 
 const getNpmScores = async (packageName: string): Promise<NpmScores> => {
   const { objects } = await request
@@ -14,6 +16,6 @@ const getNpmScores = async (packageName: string): Promise<NpmScores> => {
 };
 
 export default (packageList: string[]) =>
-  runSeries(packageList.map(name => getNpmScores.bind(null, name))).then(scores =>
+  runParallel(packageList.map(name => getNpmScores.bind(null, name)), PARALLEL_LIMIT).then(scores =>
     scores.reduce((acc, item, i) => ({ ...acc, [packageList[i]]: item }), {})
   );
