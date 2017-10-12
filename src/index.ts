@@ -28,7 +28,6 @@ program
       console.log('package-lock:', packageLock, 'yarn-lock:', yarnLock);
       console.log('PREPARE WORKSPACE');
       const entryPoint = await prepareWorkspace(CWD, JOB_FOLDER, pkg, { packageLock, yarnLock });
-      console.log('ENTRYPOINT:', entryPoint);
       console.log('COLLECT INFO');
       const data = await collectInfo(entryPoint);
       await writeJson(RESULT_FILE, data, { spaces: 2 });
