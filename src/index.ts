@@ -26,12 +26,19 @@ program
       const yarnLock = await resolveJson(program.yarnLock);
       console.log('PACKAGE:', pkg.signature || pkg.json);
       console.log('package-lock:', packageLock, 'yarn-lock:', yarnLock);
+      console.log('PREPARE WORKSPACE');
       const entryPoint = await prepareWorkspace(CWD, JOB_FOLDER, pkg, { packageLock, yarnLock });
+      console.log('ENTRYPOINT:', entryPoint);
+      console.log('COLLECT INFO');
       const data = await collectInfo(entryPoint);
       await writeJson(RESULT_FILE, data, { spaces: 2 });
+      console.log('COMPLETE WITH DATA:', data);
       await complete(cid, { data });
     } catch (error) {
+      console.error('ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ ERROR ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ');
       console.error(error);
+      console.error('^^^^^^^^^^^^^^^^^^^^^^^^^^^ ERROR ^^^^^^^^^^^^^^^^^^^^^^^^^^^');
+      console.log('COMPLETE WITH ERROR:', error.message || JSON.stringify(error));
       await complete(cid, { error: error.message || JSON.stringify(error) });
     }
   })

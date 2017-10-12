@@ -2,8 +2,11 @@ import { ensureDir, writeJSON } from 'fs-extra';
 import { join } from 'path';
 import exec, { ExecOptions } from './exec';
 
-export const installByName = (pkg: string, folder: string, options?: ExecOptions) =>
-  exec(`npm install --no-save --legacy-bundling --prefix ${folder} ${pkg}`, options);
+export const installByName = (
+  pkg: string,
+  folder: string,
+  { exec: execOptions = {}, packageLock }: { exec?: ExecOptions; packageLock?: any }
+) => exec(`npm install --no-save --legacy-bundling --prefix ${folder} ${pkg}`, { ...execOptions });
 
 export const installByJson = async (
   json: string,
