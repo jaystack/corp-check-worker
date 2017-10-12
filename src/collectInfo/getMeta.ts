@@ -13,8 +13,8 @@ export default async (packageList: string[]): Promise<Meta> => {
   console.log('CACHED PACKAGES:', Object.keys(cache));
   const uncachedPackages = packageList.filter(name => !(name in cache));
   console.log('UNCACHED PACKAGES:', uncachedPackages);
+  console.log('GET NPM-SCORES');
   const npmScores = await getNpmScores(uncachedPackages);
-  console.log('NPM-SCORES', npmScores);
   return uncachedPackages.reduce(
     (meta, name) => ({
       ...meta,
