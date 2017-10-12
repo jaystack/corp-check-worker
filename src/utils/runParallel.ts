@@ -13,6 +13,7 @@ const initResults = <T>(length: number): (T | Symbol)[] => Array.from({ length }
 
 export default <T>(tasks: Task<T>[], limit: number = 1): Promise<T[]> => {
   return new Promise<T[]>((resolve, reject) => {
+    if (tasks.length === 0) resolve([]);
     const remainedTasks: Task<T>[] = [ ...tasks ];
     const results: (T | Symbol)[] = initResults<T>(tasks.length);
     let runningTasks: number = 0;
