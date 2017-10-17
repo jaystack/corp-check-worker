@@ -8,5 +8,4 @@ export const RESULT_FILE = 'result.json';
 
 export const packageName = /^[^.@]*$/;
 export const scope = /^@[^.@]*$/;
-export const fullPackageName = /^((@([^@]+)\/)?([^@]+))(@(.*))?$/;
 export const s3Pattern = /^s3:\/\/(.+)$/;
