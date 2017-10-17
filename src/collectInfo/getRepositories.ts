@@ -1,4 +1,5 @@
-import { NpmData, Registry } from '../types';
+import { NpmData } from 'corp-check-core';
+import { Registry } from '../types';
 
 const githubRepoPattern = /github\.com\/([^./]+)\/([^./]+)(\.git)?$/;
 

@@ -1,5 +1,6 @@
 import request = require('request-promise-native');
-import { GithubData, TimeSeries, Registry } from '../types';
+import { GithubData, TimeSeries } from 'corp-check-core';
+import { Registry } from '../types';
 import getGithubIssueStats = require('gh-issues-stats');
 import runSeries from '../utils/runSeries';
 

@@ -1,4 +1,4 @@
-import { Meta, PackageMeta } from '../types';
+import { Meta, PackageMeta } from 'corp-check-core';
 import getCache from '../aws/lambda/getCache';
 import getNpmScores from './getNpmScores';
 /* import getNpmData from './getNpmData';

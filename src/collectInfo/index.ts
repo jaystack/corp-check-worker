@@ -1,4 +1,4 @@
-import { Info } from '../types';
+import { Info } from 'corp-check-core';
 import getPackageList from './getPackageList';
 import getTree from './getTree';
 import getMeta from './getMeta';

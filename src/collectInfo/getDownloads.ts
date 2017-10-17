@@ -1,5 +1,6 @@
 import request = require('request-promise-native');
-import { TimeSeries, Registry } from '../types';
+import { TimeSeries } from 'corp-check-core';
+import { Registry } from '../types';
 import { scope as scopePattern } from '../consts';
 import runSeries from '../utils/runSeries';
 

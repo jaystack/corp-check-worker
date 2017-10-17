@@ -1,5 +1,6 @@
 import request = require('request-promise-native');
-import { NpmData, Registry } from '../types';
+import { NpmData } from 'corp-check-core';
+import { Registry } from '../types';
 
 export default async (packageList: string[]): Promise<Registry<NpmData>> => {
   const { rows } = await request.post('https://replicate.npmjs.com/registry/_all_docs?include_docs=true', {

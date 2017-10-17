@@ -1,6 +1,6 @@
 import { stringify } from 'querystring';
 import request = require('request-promise-native');
-import { NpmScores } from '../types';
+import { NpmScores } from 'corp-check-core';
 import runParallel from '../utils/runParallel';
 
 const PARALLEL_LIMIT = 3;

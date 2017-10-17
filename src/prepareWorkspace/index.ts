@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { PackageSignature } from '../types';
+import { PackageSignature } from 'corp-check-core';
 import exec from './exec';
 import { installByName as npmInstallByName, installByJson as npmInstallByJson } from './npm';
 
@@ -10,7 +10,7 @@ export default async (
   { packageLock, yarnLock }: { packageLock: any; yarnLock: any }
 ): Promise<string> => {
   await exec(`rm -rf ${join(cwd, folder)}`);
-  if (name) await npmInstallByName(signature, folder, { exec: { stream: process.stdout } } );
+  if (name) await npmInstallByName(signature, folder, { exec: { stream: process.stdout } });
   else if (json) await npmInstallByJson(json, folder, { exec: { stream: process.stdout }, packageLock });
 
   if (scope && name) {

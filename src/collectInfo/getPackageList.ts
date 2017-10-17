@@ -1,4 +1,4 @@
-import { Node } from '../types';
+import { Node } from 'corp-check-core';
 
 const getPackageList = (pkg: Node, set: Set<string> = new Set<string>()): string[] => {
   if (pkg.name) set.add(pkg.name);

@@ -1,4 +1,4 @@
-import { Result } from '../../types';
+import { Result } from 'corp-check-core';
 import { COMPLETE_LAMBDA_NAME } from '../../consts';
 import invokeLambda from '../invokeLambda';
 
