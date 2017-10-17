@@ -1,3 +1,4 @@
+export const QUEUE = process.env.QUEUE || 'tasks';
 export const REGION = process.env.REGION || 'eu-central-1';
 export const COMPLETE_LAMBDA_NAME = process.env.COMPLETE_LAMBDA_NAME || 'Complete-dev';
 export const CACHE_LAMBDA_NAME = process.env.CACHE_LAMBDA_NAME || 'GetModuleMeta-dev';

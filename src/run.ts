@@ -9,7 +9,7 @@ import complete from './aws/lambda/complete';
 export default async (
   cid: string,
   pkgOrJson: string,
-  { packageLockSignature, yarnLockSignature }: { packageLockSignature: string; yarnLockSignature: string }
+  { packageLock: packageLockSignature, yarnLock: yarnLockSignature }: { packageLock: string; yarnLock: string }
 ) => {
   try {
     if (!cid) throw new Error('Missing correlation id');
