@@ -1,0 +1,46 @@
+{
+  "taskRoleArn": "arn:aws:iam::856324650258:role/corp-check-complete",
+  "containerDefinitions": [
+    {
+      "memory": 500,
+      "essential": true,
+      "name": "checker",
+      "environment": [
+        {
+          "name": "COMPLETE_LAMBDA_NAME",
+          "value": "Complete-%ENV%"
+        },
+        {
+          "name": "EXIT_TIMEOUT",
+          "value": "2000"
+        },
+        {
+          "name": "QUEUE_NAME",
+          "value": "tasks-%ENV%"
+        },
+        {
+          "name": "RABBIT_ENDPOINT",
+          "value": "%RABBIT_ENDPOINT%"
+        },
+        {
+          "name": "REGION",
+          "value": "eu-central-1"
+        }
+      ],
+      "workingDirectory": "/corp-check",
+      "image": "856324650258.dkr.ecr.eu-central-1.amazonaws.com/corp-check:%BUILD_TAG%",
+      "command": ["node", ".", "listen"],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "corp-check-container",
+          "awslogs-region": "eu-central-1",
+          "awslogs-stream-prefix": "corp_check_%ENV%_"
+        }
+      },
+      "cpu": 0,
+      "memoryReservation": 500
+    }
+  ],
+  "family": "check-%ENV%"
+}
