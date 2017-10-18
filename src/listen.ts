@@ -3,6 +3,12 @@ import { QUEUE_NAME, RABBIT_ENDPOINT, EXIT_TIMEOUT } from './consts';
 import run from './run';
 import sleep from './utils/sleep';
 
+const handleMessage = (channel: amqp.Channel) => async (msg: amqp.Message) => {
+  const { cid, pkg, packageLock, yarnLock, production } = JSON.parse(msg.content.toString());
+  await run(cid, pkg, { packageLock, yarnLock, production });
+  channel.ack(msg);
+};
+
 const handleClose = (title: string) => async (error: Error) => {
   console.error(title, error || '');
   await sleep(EXIT_TIMEOUT);
@@ -30,12 +36,8 @@ export default async () => {
     channel.on('close', handleClose('CHANNEL CLOSED'));
     channel.on('error', handleClose('CHANNEL ERROR'));
     process.on('SIGTERM', handleTerminate(connection, channel));
+    channel.consume(QUEUE_NAME, handleMessage(channel));
     console.log('WAITING TASKS ON QUEUE:', RABBIT_ENDPOINT, QUEUE_NAME);
-    channel.consume(QUEUE_NAME, async (msg: amqp.Message) => {
-      const { cid, pkg, packageLock, yarnLock, production } = JSON.parse(msg.content.toString());
-      await run(cid, pkg, { packageLock, yarnLock, production });
-      channel.ack(msg);
-    });
   } catch (error) {
     await handleClose('COULD NOT CONNECT TO RABBIT')(error);
   }
