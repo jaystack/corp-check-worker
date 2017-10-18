@@ -1,5 +1,5 @@
 export const RABBIT_ENDPOINT = process.env.RABBIT_ENDPOINT || 'amqp://localhost';
-export const QUEUE_NAME = process.env.QUEUE_NAME || 'tasks';
+export const QUEUE_NAME = process.env.QUEUE_NAME || 'tasks-dev';
 export const EXIT_TIMEOUT = process.env.EXIT_TIMEOUT ? Number(process.env.EXIT_TIMEOUT) : 2000;
 export const REGION = process.env.REGION || 'eu-central-1';
 export const COMPLETE_LAMBDA_NAME = process.env.COMPLETE_LAMBDA_NAME || 'Complete-dev';
