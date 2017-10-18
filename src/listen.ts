@@ -6,12 +6,17 @@ import sleep from './utils/sleep';
 export default async () => {
   try {
     const connection = await amqp.connect(RABBIT_ENDPOINT);
+    connection.on('close', () => process.exit(1));
+    connection.on('error', error => {
+      console.error('CONNECTION', error);
+      process.exit(1);
+    });
     const channel = await connection.createChannel();
     channel.assertQueue(QUEUE_NAME);
     channel.prefetch(1);
     channel.on('close', () => process.exit(1));
     channel.on('error', error => {
-      console.error('ERROR ON CHANNEL', error);
+      console.error('CHANNEL ERROR', error);
       process.exit(1);
     });
     console.log('WAITING TASKS ON QUEUE:', RABBIT_ENDPOINT, QUEUE_NAME);
