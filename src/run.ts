@@ -22,6 +22,7 @@ export default async (
     if (!pkg.name && !pkg.json) throw new Error('Missing or invalid package name or package.json');
     const packageLock = await resolveJson(packageLockSignature);
     const yarnLock = await resolveJson(yarnLockSignature);
+    console.log('CID:', cid);
     console.log('PACKAGE:', pkg.signature || pkg.json);
     console.log('package-lock:', packageLock, 'yarn-lock:', yarnLock, 'production', production);
     console.log('PREPARE WORKSPACE');
