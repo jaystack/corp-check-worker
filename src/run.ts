@@ -9,8 +9,13 @@ import complete from './aws/lambda/complete';
 export default async (
   cid: string,
   pkgOrJson: string,
-  { packageLock: packageLockSignature, yarnLock: yarnLockSignature }: { packageLock: string; yarnLock: string }
+  {
+    packageLock: packageLockSignature,
+    yarnLock: yarnLockSignature,
+    production = false
+  }: { packageLock: string; yarnLock: string; production: boolean }
 ) => {
+  console.log('\nˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ\n');
   try {
     if (!cid) throw new Error('Missing correlation id');
     const pkg = await resolvePackage(pkgOrJson);
@@ -18,9 +23,9 @@ export default async (
     const packageLock = await resolveJson(packageLockSignature);
     const yarnLock = await resolveJson(yarnLockSignature);
     console.log('PACKAGE:', pkg.signature || pkg.json);
-    console.log('package-lock:', packageLock, 'yarn-lock:', yarnLock);
+    console.log('package-lock:', packageLock, 'yarn-lock:', yarnLock, 'production', production);
     console.log('PREPARE WORKSPACE');
-    const entryPoint = await prepareWorkspace(CWD, JOB_FOLDER, pkg, { packageLock, yarnLock });
+    const entryPoint = await prepareWorkspace(CWD, JOB_FOLDER, pkg, { packageLock, yarnLock, production });
     console.log('COLLECT INFO');
     const data = await collectInfo(entryPoint);
     await writeJson(RESULT_FILE, data, { spaces: 2 });
@@ -33,4 +38,5 @@ export default async (
     console.log('COMPLETE WITH ERROR:', error.message || JSON.stringify(error));
     await complete(cid, { error: error.message || JSON.stringify(error) });
   }
+  console.log('\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n');
 };

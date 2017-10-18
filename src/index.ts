@@ -14,6 +14,7 @@ program
   .command('do <cid> <pkg>')
   .option('--package-lock <package-lock>', 'package-lock.json file')
   .option('--yarn-lock <yarn-lock>', 'yarn.lock file')
+  .option('--production', 'Run in production mode')
   .action(run);
 
 program.command('listen').action(listen);
