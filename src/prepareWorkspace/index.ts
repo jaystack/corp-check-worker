@@ -1,17 +1,28 @@
 import { join } from 'path';
 import { PackageSignature } from 'corp-check-core';
 import exec from './exec';
-import { installByName as npmInstallByName, installByJson as npmInstallByJson } from './npm';
+import { installByName, installByJson } from './npm';
 
 export default async (
   cwd: string,
   folder: string,
   { json, signature, scope, name }: PackageSignature & { json?: string },
-  { packageLock, yarnLock, production }: { packageLock: any; yarnLock: any; production: boolean }
+  {
+    packageLock,
+    yarnLock,
+    production,
+    unknownPackages
+  }: { packageLock: any; yarnLock: any; production: boolean; unknownPackages: string[] }
 ): Promise<string> => {
   await exec(`rm -rf ${join(cwd, folder)}`);
-  if (name) await npmInstallByName(signature, folder, { exec: { stream: process.stdout } });
-  else if (json) await npmInstallByJson(json, folder, { exec: { stream: process.stdout }, packageLock, production });
+  if (name) await installByName(signature, folder, { exec: { stream: process.stdout } });
+  else if (json)
+    await installByJson(json, folder, {
+      exec: { stream: process.stdout },
+      packageLock,
+      production,
+      unknownPackages
+    });
 
   if (scope && name) {
     return join(cwd, folder, 'node_modules', '@' + scope, name);

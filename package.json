@@ -27,15 +27,15 @@
     "@types/amqplib": "^0.5.4",
     "@types/execa": "^0.7.1",
     "@types/fs-extra": "^4.0.2",
-    "@types/node": "^8.0.41",
+    "@types/node": "^8.0.45",
     "rimraf": "^2.6.2",
     "typescript": "^2.5.3"
   },
   "dependencies": {
     "amqplib": "^0.5.1",
-    "aws-sdk": "^2.134.0",
+    "aws-sdk": "^2.135.0",
     "commander": "^2.11.0",
-    "corp-check-core": "^1.0.6",
+    "corp-check-core": "^1.0.7",
     "execa": "^0.8.0",
     "fs-extra": "^4.0.2",
     "get-license-npm": "^1.1.1",
