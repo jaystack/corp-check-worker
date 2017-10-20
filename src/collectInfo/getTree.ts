@@ -1,9 +1,8 @@
 import { join } from 'path';
 import { readJson, readdir, pathExists } from 'fs-extra';
 import getLicenseInfo = require('get-license-npm');
-import { Node } from 'corp-check-core';
+import { Node, flatten } from 'corp-check-core';
 import { packageName as packageNamePattern, scope as scopePattern } from '../consts';
-import flatten from '../utils/flatten';
 
 const getSubFolders = (predicate: (file: string) => boolean) => (files: string[]): string[] => files.filter(predicate);
 const getRegularFolders = getSubFolders(file => packageNamePattern.test(file));

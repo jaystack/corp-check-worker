@@ -1,5 +1,3 @@
-import flatten from './flatten';
-
 export type Task<T> = () => Promise<T>;
 
 const WAITING = Symbol();
