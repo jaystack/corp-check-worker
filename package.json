@@ -28,6 +28,7 @@
     "@types/execa": "^0.7.1",
     "@types/fs-extra": "^4.0.2",
     "@types/node": "^8.0.45",
+    "request-promise-native": "^1.0.5",
     "rimraf": "^2.6.2",
     "typescript": "^2.5.3"
   },
@@ -40,7 +41,6 @@
     "fs-extra": "^4.0.2",
     "get-license-npm": "^1.1.1",
     "gh-issues-stats": "^2.0.4",
-    "request": "^2.83.0",
-    "request-promise-native": "^1.0.5"
+    "request": "^2.83.0"
   }
 }
