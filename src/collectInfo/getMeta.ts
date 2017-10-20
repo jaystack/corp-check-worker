@@ -1,5 +1,5 @@
 import { Meta, PackageMeta } from 'corp-check-core';
-import { getCache } from '../api';
+import getCache from '../aws/lambda/getCache';
 import getNpmScores from './getNpmScores';
 
 export default async (packageList: string[]): Promise<Meta> => {

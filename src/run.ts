@@ -5,7 +5,7 @@ import getUnknownPackages from './utils/getUnknownPackages';
 import prepareWorkspace from './prepareWorkspace';
 import collectInfo from './collectInfo';
 import { writeJson } from 'fs-extra';
-import { complete, completeWithError } from './api';
+import complete from './aws/lambda/complete';
 
 export default async (
   cid: string,
@@ -39,13 +39,13 @@ export default async (
     const data = await collectInfo(entryPoint, unknownPackages);
     await writeJson(RESULT_FILE, data, { spaces: 2 });
     console.log('COMPLETE WITH DATA');
-    await complete(cid, data);
+    await complete(cid, { data });
   } catch (error) {
     console.error('ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ ERROR ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ');
     console.error(error);
     console.error('^^^^^^^^^^^^^^^^^^^^^^^^^^^ ERROR ^^^^^^^^^^^^^^^^^^^^^^^^^^^');
     console.log('COMPLETE WITH ERROR:', error.message || JSON.stringify(error));
-    await completeWithError(cid, error.message || JSON.stringify(error));
+    await complete(cid, { error: error.message || JSON.stringify(error) });
   }
   console.log('\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n');
 };
