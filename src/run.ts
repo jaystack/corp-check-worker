@@ -5,7 +5,7 @@ import getUnknownPackages from './utils/getUnknownPackages';
 import prepareWorkspace from './prepareWorkspace';
 import collectInfo from './collectInfo';
 import { writeJson } from 'fs-extra';
-import complete from './lambda/complete';
+import { complete } from './side-effects/lambda';
 
 export default async (
   cid: string,
