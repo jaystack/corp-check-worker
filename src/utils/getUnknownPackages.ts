@@ -1,8 +1,8 @@
 import { Registry } from '../types';
-import { getNpmPackages } from '../side-effects/npm';
+import { getPackages } from '../side-effects/npm';
 
 const getPackageAvailabilities = async (packageNames: string[]): Promise<Registry<boolean>> => {
-  const results = await getNpmPackages(packageNames);
+  const results = await getPackages(packageNames);
   return results.reduce((acc, { key, error }) => ({ ...acc, [key]: !error }), {});
 };
 

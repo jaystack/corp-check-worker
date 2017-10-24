@@ -1,12 +1,12 @@
 import { NpmScores } from 'corp-check-core';
-import { npmSearch } from '../side-effects/npm';
+import { search } from '../side-effects/npm';
 import runParallel from '../utils/runParallel';
 
 const PARALLEL_LIMIT = 3;
 
 const getNpmScores = async (packageName: string): Promise<NpmScores> => {
   console.log('GET NPM SCORE OF', packageName);
-  const results = await npmSearch(packageName, 5);
+  const results = await search(packageName, 5);
   const result = results.find(({ package: { name } }) => name === packageName);
   return result && result.score && result.score.detail ? result.score.detail : {};
 };

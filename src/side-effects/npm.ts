@@ -1,7 +1,7 @@
 import { stringify } from 'querystring';
 import request = require('request-promise-native');
 
-export const getNpmPackages = (packageNames: string[]): any[] =>
+export const getPackages = (packageNames: string[]): any[] =>
   request
     .post('https://replicate.npmjs.com/registry/_all_docs', {
       json: true,
@@ -10,7 +10,7 @@ export const getNpmPackages = (packageNames: string[]): any[] =>
     .catch(err => ({ rows: [] }))
     .then(({ rows }) => rows);
 
-export const npmSearch = (text: string, size: number): any[] =>
+export const search = (text: string, size: number): any[] =>
   request
     .get(`https://registry.npmjs.org/-/v1/search?${stringify({ text, size })}`, { json: true })
     .catch(err => ({ objects: [] }))
