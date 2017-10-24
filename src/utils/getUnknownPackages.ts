@@ -1,12 +1,9 @@
-import request = require('request-promise-native');
 import { Registry } from '../types';
+import { getNpmPackages } from '../side-effects/npm';
 
 const getPackageAvailabilities = async (packageNames: string[]): Promise<Registry<boolean>> => {
-  const { rows } = await request.post('https://replicate.npmjs.com/registry/_all_docs', {
-    json: true,
-    body: { keys: packageNames }
-  });
-  return rows.reduce((acc, { key, error }) => ({ ...acc, [key]: !error }), {});
+  const results = await getNpmPackages(packageNames);
+  return results.reduce((acc, { key, error }) => ({ ...acc, [key]: !error }), {});
 };
 
 export default async (json: any, production: boolean): Promise<string[]> => {

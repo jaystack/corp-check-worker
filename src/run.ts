@@ -5,7 +5,7 @@ import getUnknownPackages from './utils/getUnknownPackages';
 import prepareWorkspace from './prepareWorkspace';
 import collectInfo from './collectInfo';
 import { writeJson } from 'fs-extra';
-import complete from './aws/lambda/complete';
+import complete from './lambda/complete';
 
 export default async (
   cid: string,
@@ -19,10 +19,10 @@ export default async (
   console.log('\nˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ\n');
   try {
     if (!cid) throw new Error('Missing correlation id');
-    const pkg = await resolvePackage(pkgOrJson);
+    const pkg = resolvePackage(pkgOrJson);
     if (!pkg.name && !pkg.json) throw new Error('Missing or invalid package name or package.json');
-    const packageLock = await resolveJson(packageLockSignature);
-    const yarnLock = await resolveJson(yarnLockSignature);
+    const packageLock = resolveJson(packageLockSignature);
+    const yarnLock = resolveJson(yarnLockSignature);
     console.log('CID:', cid);
     console.log('PACKAGE:', pkg.signature || pkg.json);
     console.log('package-lock:', packageLock, 'yarn-lock:', yarnLock, 'production', production);

@@ -1,6 +1,6 @@
 import { ensureDir, writeJSON } from 'fs-extra';
 import { join } from 'path';
-import exec, { ExecOptions } from './exec';
+import exec, { ExecOptions } from '../side-effects/exec';
 import { Registry } from '../types';
 
 const filterDependenciesByUnknownPackages = (

@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { PackageSignature } from 'corp-check-core';
-import exec from './exec';
+import exec from '../side-effects/exec';
 import { installByName, installByJson } from './npm';
 
 export default async (
