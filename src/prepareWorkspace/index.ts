@@ -6,7 +6,7 @@ import { installByName, installByJson } from './npm';
 export default async (
   cwd: string,
   folder: string,
-  { json, signature, scope, name }: PackageSignature & { json?: string },
+  { json, signature, scope, name }: PackageSignature & { json?: any },
   {
     packageLock,
     yarnLock,

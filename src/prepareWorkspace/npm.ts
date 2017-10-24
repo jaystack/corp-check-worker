@@ -22,22 +22,21 @@ export const installByName = (pkg: string, folder: string, { exec: execOptions =
   exec(`npm install --no-save --legacy-bundling --prefix ${folder} ${pkg}`, { ...execOptions });
 
 export const installByJson = async (
-  json: string,
+  json: any,
   folder: string,
   {
     exec: execOptions = {},
     packageLock,
     production,
     unknownPackages
-  }: { exec?: ExecOptions; packageLock: any; production: boolean; unknownPackages: string[] }
+  }: { exec?: ExecOptions; packageLock?: any; production: boolean; unknownPackages: string[] }
 ) => {
   const filteredJson = cleanJsonByUnknownPackages(json, unknownPackages);
   await ensureDir(folder);
   await writeJSON(join(folder, 'package.json'), filteredJson);
   if (packageLock) await writeJSON(join(folder, 'package-lock.json'), packageLock);
-  const result = await exec(`npm install --legacy-bundling ${production ? '--production' : ''}`, {
+  return await exec(`npm install --legacy-bundling${production ? ' --production' : ''}`, {
     ...execOptions,
     cwd: folder
   });
-  return result;
 };
