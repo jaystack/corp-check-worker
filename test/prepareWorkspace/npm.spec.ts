@@ -1,14 +1,14 @@
 import 'jest';
 jest.mock('fs-extra');
-const { ensureDir, writeJSON } = require('fs-extra');
 jest.mock('../../src/side-effects/exec');
+const { ensureDir, writeJSON } = require('fs-extra');
 const exec = require('../../src/side-effects/exec').default;
 
 import { installByJson, installByName } from '../../src/prepareWorkspace/npm';
 
-exec.mockImplementation(() => Promise.resolve());
-ensureDir.mockImplementation(() => Promise.resolve());
-writeJSON.mockImplementation(() => Promise.resolve());
+exec.mockReturnValue(Promise.resolve());
+ensureDir.mockReturnValue(Promise.resolve());
+writeJSON.mockReturnValue(Promise.resolve());
 
 describe('npm', () => {
   beforeEach(() => {

@@ -16,21 +16,18 @@ const packageJson = {
 
 describe('getUnknownPackages', () => {
   it('returns empty array if package.json is not defined', async () => {
-    getPackages.mockImplementation(packageNames => Promise.resolve([]));
+    getPackages.mockReturnValue(Promise.resolve([]));
     expect(await getUnknownPackages(undefined, false)).toEqual([]);
     expect(await getUnknownPackages(undefined, true)).toEqual([]);
   });
 
   it('resolves unknown packages in production mode', async () => {
-    getPackages.mockImplementation(packageNames =>
-      Promise.resolve([ { key: 'asdasdasd', error: 'not_found' }, { key: 'repatch' } ])
-    );
-
+    getPackages.mockReturnValue(Promise.resolve([ { key: 'asdasdasd', error: 'not_found' }, { key: 'repatch' } ]));
     expect(await getUnknownPackages(packageJson, true)).toEqual([ 'asdasdasd' ]);
   });
 
   it('resolves unknown packages in non-production mode', async () => {
-    getPackages.mockImplementation(packageNames =>
+    getPackages.mockReturnValue(
       Promise.resolve([
         { key: 'asdasdasd', error: 'not_found' },
         { key: 'repatch' },
@@ -38,7 +35,6 @@ describe('getUnknownPackages', () => {
         { key: '@types/node' }
       ])
     );
-
     expect(await getUnknownPackages(packageJson, false)).toEqual([ 'asdasdasd', 'qweqweqwe' ]);
   });
 });

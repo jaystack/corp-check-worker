@@ -1,11 +1,11 @@
 import 'jest';
 jest.mock('../../src/side-effects/exec');
-const exec = require('../../src/side-effects/exec').default;
-exec.mockImplementation(() => Promise.resolve());
 jest.mock('../../src/prepareWorkspace/npm');
+const exec = require('../../src/side-effects/exec').default;
 const { installByName, installByJson } = require('../../src/prepareWorkspace/npm');
-installByName.mockImplementation(() => Promise.resolve());
-installByJson.mockImplementation(() => Promise.resolve());
+exec.mockReturnValue(Promise.resolve());
+installByName.mockReturnValue(Promise.resolve());
+installByJson.mockReturnValue(Promise.resolve());
 
 import prepareWorkspace from '../../src/prepareWorkspace';
 
