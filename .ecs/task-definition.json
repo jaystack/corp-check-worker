@@ -33,7 +33,6 @@
       ],
       "workingDirectory": "/corp-check",
       "image": "856324650258.dkr.ecr.eu-central-1.amazonaws.com/corp-check:%BUILD_TAG%",
-      "command": [ "node", ".", "listen" ],
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {

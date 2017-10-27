@@ -11,3 +11,5 @@ ADD tsconfig.json /corp-check/tsconfig.json
 ADD src /corp-check/src
 
 RUN npm run build
+
+CMD node . listen
