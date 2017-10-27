@@ -26,11 +26,11 @@ export default async (
     console.log('CID:', cid);
     console.log('PACKAGE:', pkg.signature || pkg.json);
     console.log('package-lock:', packageLock, 'yarn-lock:', yarnLock, 'production', production);
-    await updateProgress(cid, '1/3 - Checking package availabilities');
+    await updateProgress(cid, '1/4 - Checking package availabilities');
     const unknownPackages = await getUnknownPackages(pkg.json, production);
     console.log('UNKNOWN PACKAGES:', unknownPackages);
     console.log('PREPARE WORKSPACE');
-    await updateProgress(cid, '2/3 - Installing');
+    await updateProgress(cid, '2/4 - Installing');
     const entryPoint = await prepareWorkspace(CWD, JOB_FOLDER, pkg, {
       packageLock,
       yarnLock,
@@ -38,10 +38,11 @@ export default async (
       unknownPackages
     });
     console.log('COLLECT INFO');
+    await updateProgress(cid, '3/4 - Collecting info');
     const data = await collectInfo(entryPoint, unknownPackages);
     await writeJson(RESULT_FILE, data, { spaces: 2 });
     console.log('COMPLETE WITH DATA');
-    await updateProgress(cid, '3/3 - Completing');
+    await updateProgress(cid, '4/4 - Completing');
     await complete(cid, { data });
   } catch (error) {
     console.error('ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ ERROR ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ');
