@@ -38,7 +38,6 @@ export default async (
       unknownPackages
     });
     console.log('COLLECT INFO');
-    await updateProgress(cid, 'Collectiong info');
     const data = await collectInfo(entryPoint, unknownPackages);
     await writeJson(RESULT_FILE, data, { spaces: 2 });
     console.log('COMPLETE WITH DATA');
