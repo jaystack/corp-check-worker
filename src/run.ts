@@ -42,6 +42,7 @@ export default async (
     const data = await collectInfo(entryPoint, unknownPackages);
     await writeJson(RESULT_FILE, data, { spaces: 2 });
     console.log('COMPLETE WITH DATA');
+    await updateProgress(cid, 'Completing');
     await complete(cid, { data });
   } catch (error) {
     console.error('ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ ERROR ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ');
