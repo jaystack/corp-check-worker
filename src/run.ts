@@ -5,7 +5,7 @@ import getUnknownPackages from './utils/getUnknownPackages';
 import prepareWorkspace from './prepareWorkspace';
 import collectInfo from './collectInfo';
 import { writeJson } from 'fs-extra';
-import { complete } from './side-effects/lambda';
+import { complete, updateProgress } from './side-effects/lambda';
 
 export default async (
   cid: string,
@@ -26,9 +26,11 @@ export default async (
     console.log('CID:', cid);
     console.log('PACKAGE:', pkg.signature || pkg.json);
     console.log('package-lock:', packageLock, 'yarn-lock:', yarnLock, 'production', production);
+    await updateProgress(cid, 'Checking package availabilities');
     const unknownPackages = await getUnknownPackages(pkg.json, production);
     console.log('UNKNOWN PACKAGES:', unknownPackages);
     console.log('PREPARE WORKSPACE');
+    await updateProgress(cid, 'Installing');
     const entryPoint = await prepareWorkspace(CWD, JOB_FOLDER, pkg, {
       packageLock,
       yarnLock,
@@ -36,6 +38,7 @@ export default async (
       unknownPackages
     });
     console.log('COLLECT INFO');
+    await updateProgress(cid, 'Collectiong infos');
     const data = await collectInfo(entryPoint, unknownPackages);
     await writeJson(RESULT_FILE, data, { spaces: 2 });
     console.log('COMPLETE WITH DATA');

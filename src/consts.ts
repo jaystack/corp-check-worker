@@ -7,6 +7,8 @@ export const COMPLETE_LAMBDA_NAME = process.env.COMPLETE_LAMBDA_NAME || 'Complet
 export const COMPLETE_ENDPOINT = process.env.COMPLETE_ENDPOINT || 'complete';
 export const CACHE_LAMBDA_NAME = process.env.CACHE_LAMBDA_NAME || 'GetModuleMeta-dev';
 export const CACHE_ENDPOINT = process.env.CACHE_ENDPOINT || 'getmodulemeta';
+export const PROGRESS_LAMBDA_NAME = process.env.PROGRESS_LAMBDA_NAME || 'Progress-dev';
+export const PROGRESS_ENDPOINT = process.env.PROGRESS_ENDPOINT || 'progress';
 export const S3_BUCKET_NAME = process.env.S3_BUCKET_NAME || 'corp-check-rest-filestorage-dev';
 
 export const CWD = process.cwd();
