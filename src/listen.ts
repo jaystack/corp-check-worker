@@ -12,6 +12,7 @@ const handleMessage = (channel: amqp.Channel) => async (msg: amqp.Message) => {
 const handleClose = (title: string) => async (error: Error) => {
   console.error(title, error || '');
   await sleep(EXIT_TIMEOUT);
+  console.log('EXIT WITH CODE 1');
   process.exit(1);
 };
 
