@@ -1,5 +1,5 @@
 # corp-check-worker
-Worker layer for corp-check
+Worker layer for Corp-Check
 
 ## Developing
 

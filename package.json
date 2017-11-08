@@ -1,7 +1,7 @@
 {
   "name": "corp-check-worker",
   "version": "0.0.1",
-  "description": "Worker layer for corp-check",
+  "description": "Worker layer for Corp-Check",
   "main": "lib",
   "typings": "lib",
   "scripts": {
