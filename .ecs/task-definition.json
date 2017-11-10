@@ -11,6 +11,10 @@
           "value": "Complete-%ENV%"
         },
         {
+          "name": "PROGRESS_LAMBDA_NAME",
+          "value": "Progress-%ENV%"
+        },
+        {
           "name": "CACHE_LAMBDA_NAME",
           "value": "GetModuleMeta-%ENV%"
         },
