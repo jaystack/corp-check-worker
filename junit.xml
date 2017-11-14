@@ -1,0 +1,86 @@
+<testsuites name="jest tests">
+  <testsuite name="getUnknownPackages" tests="3" errors="0" failures="0" skipped="0" timestamp="2017-11-14T13:29:45" time="2.228">
+    <testcase classname="getUnknownPackages returns empty array if package.json is not defined" name="getUnknownPackages returns empty array if package.json is not defined" time="0.006">
+    </testcase>
+    <testcase classname="getUnknownPackages resolves unknown packages in production mode" name="getUnknownPackages resolves unknown packages in production mode" time="0.002">
+    </testcase>
+    <testcase classname="getUnknownPackages resolves unknown packages in non-production mode" name="getUnknownPackages resolves unknown packages in non-production mode" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="prepareWorkspace" tests="3" errors="0" failures="0" skipped="0" timestamp="2017-11-14T13:29:45" time="2.391">
+    <testcase classname="prepareWorkspace installs properly by name" name="prepareWorkspace installs properly by name" time="0.01">
+    </testcase>
+    <testcase classname="prepareWorkspace installs properly by name with scope" name="prepareWorkspace installs properly by name with scope" time="0.002">
+    </testcase>
+    <testcase classname="prepareWorkspace installs properly by json" name="prepareWorkspace installs properly by json" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="npm" tests="4" errors="0" failures="0" skipped="0" timestamp="2017-11-14T13:29:45" time="2.454">
+    <testcase classname="npm installByName invokes exec with the proper arguments" name="npm installByName invokes exec with the proper arguments" time="0.009">
+    </testcase>
+    <testcase classname="npm installByJson works properly at basic usage" name="npm installByJson works properly at basic usage" time="0.007">
+    </testcase>
+    <testcase classname="npm installByJson works properly at production mode" name="npm installByJson works properly at production mode" time="0">
+    </testcase>
+    <testcase classname="npm installByJson works properly with package.lock" name="npm installByJson works properly with package.lock" time="0">
+    </testcase>
+  </testsuite>
+  <testsuite name="runParalell" tests="5" errors="0" failures="0" skipped="0" timestamp="2017-11-14T13:29:45" time="2.496">
+    <testcase classname="runParalell returns empty array if there is no tasks" name="runParalell returns empty array if there is no tasks" time="0.008">
+    </testcase>
+    <testcase classname="runParalell keeps the original order" name="runParalell keeps the original order" time="0.227">
+    </testcase>
+    <testcase classname="runParalell runs tasks one by one if limit is 1" name="runParalell runs tasks one by one if limit is 1" time="0.17">
+    </testcase>
+    <testcase classname="runParalell runs all tasks parallel if limit is big enough" name="runParalell runs all tasks parallel if limit is big enough" time="0.051">
+    </testcase>
+    <testcase classname="runParalell throws error if any task throws" name="runParalell throws error if any task throws" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="getPackageList" tests="2" errors="0" failures="0" skipped="0" timestamp="2017-11-14T13:29:47" time="0.177">
+    <testcase classname="getPackageList returns the package list by a tree" name="getPackageList returns the package list by a tree" time="0.005">
+    </testcase>
+    <testcase classname="getPackageList throws if it misses a &quot;dependencies&quot; property in any node" name="getPackageList throws if it misses a &quot;dependencies&quot; property in any node" time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="getTree" tests="1" errors="0" failures="0" skipped="0" timestamp="2017-11-14T13:29:45" time="2.587">
+    <testcase classname="getTree works properly" name="getTree works properly" time="0.017">
+    </testcase>
+  </testsuite>
+  <testsuite name="getNpmScores" tests="1" errors="0" failures="0" skipped="0" timestamp="2017-11-14T13:29:47" time="0.352">
+    <testcase classname="getNpmScores returns npm scores" name="getNpmScores returns npm scores" time="0.007">
+    </testcase>
+  </testsuite>
+  <testsuite name="resolvePackage" tests="2" errors="0" failures="0" skipped="0" timestamp="2017-11-14T13:29:48" time="0.128">
+    <testcase classname="resolvePackage parses JSON if input is JSON" name="resolvePackage parses JSON if input is JSON" time="0.002">
+    </testcase>
+    <testcase classname="resolvePackage returns resolved npm package name if input is that" name="resolvePackage returns resolved npm package name if input is that" time="0.002">
+    </testcase>
+  </testsuite>
+  <testsuite name="filterFolders" tests="2" errors="0" failures="0" skipped="0" timestamp="2017-11-14T13:29:48" time="0.185">
+    <testcase classname="filterFolders filterRegularFolders" name="filterFolders filterRegularFolders" time="0.002">
+    </testcase>
+    <testcase classname="filterFolders filterScopedFolders" name="filterFolders filterScopedFolders" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="resolveJson" tests="2" errors="0" failures="0" skipped="0" timestamp="2017-11-14T13:29:48" time="0.106">
+    <testcase classname="resolveJson parses valid JSON" name="resolveJson parses valid JSON" time="0.002">
+    </testcase>
+    <testcase classname="resolveJson returns null at invalid JSON" name="resolveJson returns null at invalid JSON" time="0.001">
+    </testcase>
+  </testsuite>
+  <testsuite name="getMeta" tests="1" errors="0" failures="0" skipped="0" timestamp="2017-11-14T13:29:45" time="2.951">
+    <testcase classname="getMeta returns meta information about packages" name="getMeta returns meta information about packages" time="0.01">
+    </testcase>
+  </testsuite>
+  <testsuite name="run" tests="4" errors="0" failures="0" skipped="0" timestamp="2017-11-14T13:29:45" time="2.987">
+    <testcase classname="run throws if no cid provided" name="run throws if no cid provided" time="0.008">
+    </testcase>
+    <testcase classname="run throws if no package provided" name="run throws if no package provided" time="0.001">
+    </testcase>
+    <testcase classname="run works properly with package name" name="run works properly with package name" time="0.002">
+    </testcase>
+    <testcase classname="run works properly with package.json" name="run works properly with package.json" time="0.001">
+    </testcase>
+  </testsuite>
+</testsuites>

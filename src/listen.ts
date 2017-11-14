@@ -1,5 +1,5 @@
 import amqp = require('amqplib');
-import { QUEUE_NAME, RABBIT_ENDPOINT, EXIT_TIMEOUT } from './consts';
+import { QUEUE_NAME, RABBIT_ENDPOINT, EXIT_TIMEOUT, DEAD_LETTER_EXCHANGE_NAME } from './consts';
 import run from './run';
 import sleep from './utils/sleep';
 
@@ -32,7 +32,7 @@ export default async () => {
     connection.on('close', handleClose('CONNECTION CLOSED'));
     connection.on('error', handleClose('CONNECTION ERROR'));
     const channel = await connection.createChannel();
-    channel.assertQueue(QUEUE_NAME);
+    channel.assertQueue(QUEUE_NAME, { deadLetterExchange: DEAD_LETTER_EXCHANGE_NAME });
     channel.prefetch(1);
     channel.on('close', handleClose('CHANNEL CLOSED'));
     channel.on('error', handleClose('CHANNEL ERROR'));
