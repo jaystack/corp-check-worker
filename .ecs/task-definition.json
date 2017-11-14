@@ -48,6 +48,5 @@
       "cpu": 0,
       "memoryReservation": 500
     }
-  ],
-  "family": "check-%ENV%"
+  ]
 }
