@@ -3,3 +3,4 @@ lib
 job
 result.json
 coverage
+junit.xml

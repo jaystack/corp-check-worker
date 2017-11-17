@@ -1,4 +1,4 @@
-import { Result, Meta } from 'corp-check-core';
+import { Result, PackageMeta } from 'corp-check-core';
 import { Lambda } from 'aws-sdk';
 import { stringify } from 'querystring';
 import request = require('request-promise-native');
@@ -37,7 +37,7 @@ export const complete = (cid: string, payload: Result) =>
     ? api.post(COMPLETE_ENDPOINT, { body: { cid, ...payload } })
     : invokeLambda(COMPLETE_LAMBDA_NAME, { cid, ...payload });
 
-export const getCache = (modules: string[]): Promise<Meta> =>
+export const getCache = (modules: string[]): Promise<PackageMeta[]> =>
   API_URL ? api.post(CACHE_ENDPOINT, { body: { modules } }) : invokeLambda(CACHE_LAMBDA_NAME, { modules });
 
 export const updateProgress = (cid: string, message: string): Promise<void> =>

@@ -59,7 +59,7 @@
     "amqplib": "^0.5.1",
     "aws-sdk": "^2.135.0",
     "commander": "^2.11.0",
-    "corp-check-core": "^1.0.7",
+    "corp-check-core": "^2.0.0",
     "execa": "^0.8.0",
     "fs-extra": "^4.0.2",
     "get-license-npm": "^1.1.1",

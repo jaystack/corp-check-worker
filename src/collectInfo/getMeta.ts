@@ -1,22 +1,20 @@
-import { Meta, PackageMeta } from 'corp-check-core';
+import { PackageMeta } from 'corp-check-core';
 import { getCache } from '../side-effects/lambda';
 import getNpmScores from './getNpmScores';
 
-export default async (packageList: string[]): Promise<Meta> => {
+export default async (packageList: string[]): Promise<PackageMeta[]> => {
   console.log('GET CACHE');
   const cache = await getCache(packageList);
   console.log('CACHED PACKAGES:', Object.keys(cache));
-  const uncachedPackages = packageList.filter(name => !(name in cache));
+  const uncachedPackages = packageList.filter(name => !cache.find(c => c.name === name));
   console.log('UNCACHED PACKAGES:', uncachedPackages);
   console.log('GET NPM-SCORES');
   const npmScores = await getNpmScores(uncachedPackages);
-  return uncachedPackages.reduce(
-    (meta, name) => ({
-      ...meta,
-      [name]: {
-        npmScores: npmScores[name]
-      } as PackageMeta
-    }),
-    cache
-  );
+  return [
+    ...cache,
+    ...uncachedPackages.map(name => ({
+      name,
+      npmScores: npmScores[name]
+    }))
+  ];
 };
