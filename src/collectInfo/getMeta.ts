@@ -5,7 +5,7 @@ import getNpmScores from './getNpmScores';
 export default async (packageList: string[]): Promise<PackageMeta[]> => {
   console.log('GET CACHE');
   const cache = await getCache(packageList);
-  console.log('CACHED PACKAGES:', Object.keys(cache));
+  console.log('CACHED PACKAGES:', cache.map(({ name }) => name));
   const uncachedPackages = packageList.filter(name => !cache.find(c => c.name === name));
   console.log('UNCACHED PACKAGES:', uncachedPackages);
   console.log('GET NPM-SCORES');
