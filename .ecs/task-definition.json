@@ -2,7 +2,7 @@
   "taskRoleArn": "arn:aws:iam::856324650258:role/corp-check-complete",
   "containerDefinitions": [
     {
-      "memory": 500,
+      "memory": 2000,
       "essential": true,
       "name": "checker",
       "environment": [
@@ -46,7 +46,7 @@
         }
       },
       "cpu": 0,
-      "memoryReservation": 500
+      "memoryReservation": 1500
     }
   ]
 }
