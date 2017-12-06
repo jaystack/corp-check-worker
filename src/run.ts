@@ -6,6 +6,15 @@ import prepareWorkspace from './prepareWorkspace';
 import collectInfo from './collectInfo';
 import { writeJson } from 'fs-extra';
 import { complete, updateProgress } from './side-effects/lambda';
+import errorHandler from './errorHandler';
+
+const handleError = cid => async error => {
+  console.error('ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ ERROR ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ');
+  console.error(error);
+  console.error('^^^^^^^^^^^^^^^^^^^^^^^^^^^ ERROR ^^^^^^^^^^^^^^^^^^^^^^^^^^^');
+  console.log('COMPLETE WITH ERROR:', error.message || JSON.stringify(error));
+  await complete(cid, { error: error.message || JSON.stringify(error) });
+};
 
 export default async (
   cid: string,
@@ -19,6 +28,7 @@ export default async (
   console.log('\nˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ\n');
   try {
     if (!cid) throw new Error('Missing correlation id');
+    errorHandler.subscribe(handleError(cid));
     const pkg = resolvePackage(pkgOrJson);
     if (!pkg.name && !pkg.json) throw new Error('Missing or invalid package name or package.json');
     const packageLock = resolveJson(packageLockSignature);
@@ -45,11 +55,7 @@ export default async (
     await updateProgress(cid, '4/4 - Completing');
     await complete(cid, { data });
   } catch (error) {
-    console.error('ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ ERROR ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ');
-    console.error(error);
-    console.error('^^^^^^^^^^^^^^^^^^^^^^^^^^^ ERROR ^^^^^^^^^^^^^^^^^^^^^^^^^^^');
-    console.log('COMPLETE WITH ERROR:', error.message || JSON.stringify(error));
-    await complete(cid, { error: error.message || JSON.stringify(error) });
+    await handleError(cid)(error);
   }
   console.log('\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n');
 };

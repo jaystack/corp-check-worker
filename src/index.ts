@@ -1,11 +1,18 @@
 import program = require('commander');
 import run from './run';
 import listen from './listen';
+import errorHandler from './errorHandler';
 
 const packageJson = require('../package.json');
 
 process.on('unhandledRejection', error => {
-  throw error;
+  console.log('UNHANDLED_REJECTION');
+  errorHandler.throwError(error);
+});
+
+process.on('uncaughtException', error => {
+  console.log('UNCAUGHT_EXCEPTION');
+  errorHandler.throwError(error);
 });
 
 program.version(packageJson.version);
