@@ -57,13 +57,14 @@
   },
   "dependencies": {
     "amqplib": "^0.5.1",
+    "async": "^2.6.0",
     "aws-sdk": "^2.135.0",
     "commander": "^2.11.0",
-    "corp-check-core": "^2.0.0",
+    "corp-check-core": "^2.0.1",
     "execa": "^0.8.0",
     "fs-extra": "^4.0.2",
-    "get-license-npm": "^1.1.1",
     "gh-issues-stats": "^2.0.4",
+    "hosted-git-info": "^2.5.0",
     "request": "^2.83.0",
     "request-promise-native": "^1.0.5"
   }

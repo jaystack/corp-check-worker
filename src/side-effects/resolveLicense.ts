@@ -1,4 +1,4 @@
-import getLicenseInfo = require('get-license-npm');
+import getLicense from './getLicense';
 
 const stringifyLicenseType = (license: any): string => {
   if (!license) return null;
@@ -7,8 +7,12 @@ const stringifyLicenseType = (license: any): string => {
 };
 
 export default async (folder: string) => {
-  const license = await getLicenseInfo(folder);
+  const license = await getLicense(folder);
   const licenseValue = license.license || null;
   const licenseType = (licenseValue && licenseValue.type) || licenseValue;
-  return { type: stringifyLicenseType(licenseType), hasLicenseFile: !!license.licenseFile, isPrivate: !!license.private };
+  return {
+    type: stringifyLicenseType(licenseType),
+    hasLicenseFile: !!license.licenseFile,
+    isPrivate: !!license.private
+  };
 };

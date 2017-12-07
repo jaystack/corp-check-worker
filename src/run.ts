@@ -10,10 +10,11 @@ import errorHandler from './errorHandler';
 
 const handleError = cid => async error => {
   console.error('ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ ERROR ˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇˇ');
-  console.error(error);
+  console.error(error.msg || '', error);
   console.error('^^^^^^^^^^^^^^^^^^^^^^^^^^^ ERROR ^^^^^^^^^^^^^^^^^^^^^^^^^^^');
   console.log('COMPLETE WITH ERROR:', error.message || JSON.stringify(error));
-  await complete(cid, { error: error.message || JSON.stringify(error) });
+  console.log({ error: error.message || JSON.stringify(error), message: error.msg })
+  await complete(cid, { error: error.message || JSON.stringify(error), message: error.msg });
 };
 
 export default async (
